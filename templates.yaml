@@ -1,0 +1,7 @@
+welcome: Hallo! Willkommen zum Dr. Kawashimas Merkspiel. Ich werde dir gleich drei Zahlen nennen
+
+round: Nenne die Zahlen {{ numbers|join(", ") }} in umgekehrter Reihenfolge
+
+win: Sehr sehr gut!
+
+lose: Nein, das ist leider falsch du Hanswurst. 
