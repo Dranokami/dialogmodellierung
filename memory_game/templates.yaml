@@ -1,0 +1,7 @@
+welcome: Willkommen zu dem Merkspiel . Ich werde gleich drei Zahlen nennen. Bist du bereit?
+
+round: Nenne die Zahlen {{ numbers|join(", ") }} in umgekehrter Reihenfolge.
+
+win: Sehr sehr gut!
+
+lose: Nein, das ist leider falsch.

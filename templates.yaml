@@ -1,4 +1,6 @@
-welcome: Hallo! Willkommen zum Dr. Kawashimas Merkspiel. Ich werde dir gleich drei Zahlen nennen
+welcome: Hallo! Heute gibt es in der Mensa {{maindish}} und {{veggiemeal}}. Wie kann ich dir helfen?
+
+alt_welcome: Die Mensa X hat heute schon geschlossen. Morgen gibt es {{maindish}} und {{veggiemeal}}. Wie kann ich dir helfen?
 
 round: Nenne die Zahlen {{ numbers|join(", ") }} in umgekehrter Reihenfolge
 
