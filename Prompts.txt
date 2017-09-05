@@ -1,0 +1,22 @@
+
+U: Öffne <Skill> --> Invocation word: 'Heisshunger', 'Kohldampf', 'Bären hunger'
+--------------
+Variante 1:
+S: Willkommen bei der Mensaapp der Uni Bielefeld. Möchtest du [heute] in der Mensa X essen? --> [] ab 14:30Uhr sollte hier [morgen] stehen
+U: JA | NEIN | or --> Fehlermeldung
+	NEIN S: Wann möchtest du dann dort essen? Nenne ein Datum.
+		 U: <Datum> | <Tag> | <relative Zeitangabe> | or --> Fehlermeldung
+JA S: In der Mensa gibt es heute [Menü 1] oder [Menü 2]
+
+Variante 2:
+S: Willkommen bei der Mensaapp der Uni Bielefeld. Heute gibt es [Menü 1] und [Menü 2]
+	
+
+
+Aufteilung der Aufgaben
+--------------------------
+Kristin: Struktur (ohne prompts)
+Markus & Ubaid & Kristin: Pompts (welche konkreten Prompts bzw. Reprompts können wir erwarten)
+Julia: * Anbindung an die Mensaseite (beautifulsoup)// Source-code der Mensaseite (quellcode anzeigen lassen) --> welche Regularitäten?
+(ggf. Julia) * Information laden + in einer Datenbank speichern
+David: Code (flask-ask)
