@@ -1,0 +1,9 @@
+# All file types and folders that should automatically not be uploaded will should be written down here.
+
+# All .pyc files
+webscraper/*.pyc
+memory_game/*.pyc
+v0.1/*.pyc
+
+#nobody want's other peoples checkpoints
+webscraper/.ipynb_checkpoints

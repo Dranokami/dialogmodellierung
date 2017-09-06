@@ -20,24 +20,23 @@ logging.getLogger("flask_ask").setLevel(logging.DEBUG)
 @ask.launch
 
 def new_game():
+
     day_and_mensa = date_and_mensa_open()
     food = {
     "2017-09-05" : {"maindish":"Alaskaseelachsfilet", "veggiedish":u"gefüllte Paprikaschote"},
-    "2017-09-06" : [u"Hähnchenkeule", u"Käsemedaillon"],
-    "2017-09-07" : [u"Cordon Bleu", u"Frühlingsröllchen"]
-    #usw    
+    "2017-09-06" : {"maindish":u"Hähnchenkeule", "veggiedish":u"Käsemedaillon"},
+    "2017-09-07" : {"maindish":u"Cordon Bleu", "veggiedish":u"Frühlingsröllchen"}  
     }
     
     if day_and_mensa[1] == "heute":
-        maindish = food[day_and_mensa[0]][0]
-        veggiemeal = food[day_and_mensa[0]][1]
-        welcome_msg = render_template('welcome', maindish=maindish, veggiemeal=veggiemeal)
+        maindish = food[day_and_mensa[0]]["maindish"]
+        veggiedish = food[day_and_mensa[0]]["veggiedish"]
+        welcome_msg = render_template('welcome', maindish=maindish, veggiedish=veggiedish)
     else:
         tommorow = str(datetime.datetime.now() + datetime.timedelta(days=1)).split()[0]
-        maindish = food[tommorow][0]
-        veggiemeal = food[tommorow][1]
-        welcome_msg = render_template('alt_welcome', maindish=maindish, veggiemeal=veggiemeal)
-
+        maindish = food[tommorow][0]["maindish"]
+        veggiedish = food[tommorow][1]["veggiedish"]
+        welcome_msg = render_template('alt_welcome', maindish=maindish, veggiedish=veggiedish)
     return question(welcome_msg)
 
 
@@ -53,26 +52,35 @@ def menuoptions():
 
 def dayoptions():
     option_msg = render_template('day')
+    #session.attributes['numbers'] = numbers[::-1]  # reverse
+    return question(option_msg)
+
+@ask.intent("VitalIntent")
+
+def vitalinfo():
+    vital = "Lecker essen"
+    option_msg = render_template('vitalmsg', vital = vital)
 
     #session.attributes['numbers'] = numbers[::-1]  # reverse
     return question(option_msg)
 
 
-#@ask.intent("AnswerIntent", convert={'first': int, 'second': int, 'third': int})
+@ask.intent("BeilagenIntent")
 
-#def answer(first, second, third):
+def beilageninfo():
+    sidedish = "Bulgur"
+    option_msg = render_template('beilagen', sidedish=sidedish)
 
-#    winning_numbers = session.attributes['numbers']
+    #session.attributes['numbers'] = numbers[::-1]  # reverse
+    return question(option_msg)
 
-#    if [first, second, third] == winning_numbers:
 
-#        msg = render_template('win')
+@ask.intent("FinalIntent")
 
-#    else:
+def end_msg():
+    goodbye = render_template('quitmsg')
 
-#        msg = render_template('lose')
-
-#    return statement(msg)
+    return statement(goodbye)
 
 
 def date_and_mensa_open():
