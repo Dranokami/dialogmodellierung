@@ -1,0 +1,21 @@
+// MensaApp
+digraph {
+	A [label=MensaApp]
+	B [label="[Menue 1] und [Menue 2] 
+[anderes Menue]^[Preise]^[anderer Tag]"]
+	D [label=OR]
+	E [label="Info [keyword]"]
+	F [label="Frage: [keyword 1] v [keyword 2]"]
+	G [label=FINAL]
+		A -> B
+		B -> D
+		B -> E
+		E -> F
+		F -> E
+		B -> G
+		E -> G
+		F -> G
+		E -> D
+		F -> D
+		D -> B
+}
