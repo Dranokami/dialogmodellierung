@@ -22,7 +22,7 @@ logging.getLogger("flask_ask").setLevel(logging.DEBUG)
 def new_game():
     day_and_mensa = date_and_mensa_open()
     food = {
-    "2017-09-05" : ["Alaskaseelachsfilet",u"gefüllte Paprikaschote"],
+    "2017-09-05" : {"maindish":"Alaskaseelachsfilet", "veggiedish":u"gefüllte Paprikaschote"},
     "2017-09-06" : [u"Hähnchenkeule", u"Käsemedaillon"],
     "2017-09-07" : [u"Cordon Bleu", u"Frühlingsröllchen"]
     #usw    
@@ -36,37 +36,43 @@ def new_game():
         tommorow = str(datetime.datetime.now() + datetime.timedelta(days=1)).split()[0]
         maindish = food[tommorow][0]
         veggiemeal = food[tommorow][1]
-        alt_welcome=welcome_msg = render_template('alt_welcome', maindish=maindish, veggiemeal=veggiemeal)
+        welcome_msg = render_template('alt_welcome', maindish=maindish, veggiemeal=veggiemeal)
 
     return question(welcome_msg)
 
 
-@ask.intent("YesIntent")
+@ask.intent("MenuIntent")
 
-def next_round():
+def menuoptions():
+    option_msg = render_template('menu')
 
-    
-    round_msg = render_template('round', numbers=numbers)
+    #session.attributes['numbers'] = numbers[::-1]  # reverse
+    return question(option_msg)
 
-    session.attributes['numbers'] = numbers[::-1]  # reverse
-    return question(round_msg)
+@ask.intent("DayIntent")
+
+def dayoptions():
+    option_msg = render_template('day')
+
+    #session.attributes['numbers'] = numbers[::-1]  # reverse
+    return question(option_msg)
 
 
-@ask.intent("AnswerIntent", convert={'first': int, 'second': int, 'third': int})
+#@ask.intent("AnswerIntent", convert={'first': int, 'second': int, 'third': int})
 
-def answer(first, second, third):
+#def answer(first, second, third):
 
-    winning_numbers = session.attributes['numbers']
+#    winning_numbers = session.attributes['numbers']
 
-    if [first, second, third] == winning_numbers:
+#    if [first, second, third] == winning_numbers:
 
-        msg = render_template('win')
+#        msg = render_template('win')
 
-    else:
+#    else:
 
-        msg = render_template('lose')
+#        msg = render_template('lose')
 
-    return statement(msg)
+#    return statement(msg)
 
 
 def date_and_mensa_open():

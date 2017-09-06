@@ -1,9 +1,7 @@
-welcome: Hallo! Heute gibt es in der Mensa {{maindish}} und {{veggiemeal}}. Wie kann ich dir helfen?
+welcome: Willkommen in der Teufelsküche der Uni Bielefeld! Heute gibt es in der Mensa {{maindish}} und {{veggiemeal}}. Möchtest du etwas über andere Mahlzeiten oder ein anderes Datum wissen?
 
-alt_welcome: Die Mensa X hat heute schon geschlossen. Morgen gibt es {{maindish}} und {{veggiemeal}}. Wie kann ich dir helfen?
+alt_welcome: Die Mensa X hat heute schon geschlossen. Morgen gibt es {{maindish}} und {{veggiemeal}}. Möchtest du etwas über andere Mahlzeiten oder ein anderes Datum wissen?
 
-round: Nenne die Zahlen {{ numbers|join(", ") }} in umgekehrter Reihenfolge
+menu: Du willst also etwas über Mensa Vital oder so wissen.
 
-win: Sehr sehr gut!
-
-lose: Nein, das ist leider falsch du Hanswurst. 
+day: An welchem Wochentag möchtest du essen? 
