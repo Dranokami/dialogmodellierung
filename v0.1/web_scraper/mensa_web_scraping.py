@@ -27,16 +27,17 @@ def read_json(json_file):
         return jfile.read()
 
 
-def download_page(page_existing=False):
+def download_page(URL=None):
     ''' function downloads the information of the current week
     returns text | error message'''
-    URL = "http://www.studierendenwerk-bielefeld.de/essen-trinken/essen-und-trinken-in-mensen/bielefeld/mensa-gebaeude-x.html"
+    if URL == None:
+        URL = "http://www.studierendenwerk-bielefeld.de/essen-trinken/essen-und-trinken-in-mensen/bielefeld/mensa-gebaeude-x.html"
     r = requests.get(URL)
     if r.status_code == 200:
         r.encoding = "utf-8"
         return r.text
-        # else:
-        #    return "funzt nicht" #Wie soll scraper_pipeline darauf zugreifen?
+    else:
+        return "Seite existiert nicht" #Wie soll scraper_pipeline darauf zugreifen?
 
 
 def parse_web_page(doc):

@@ -3,8 +3,8 @@
 
 import logging
 import datetime
-import web_scraper.fake_scrape as mensa
-#import web_scraper.mensa_scraper  as mensa
+#import web_scraper.fake_scrape as mensa
+import web_scraper.mensa_web_scraping  as mensa
 import misc.misc as misc 
 
 from random import randint
