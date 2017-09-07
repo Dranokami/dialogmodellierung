@@ -43,8 +43,6 @@ MenuIntent Ich möchte etwas über andere Menüs wissen
 MenuIntent Ich möchte etwas über ein anderes Menü wissen
 FinalIntent Nein Danke
 FinalIntent Das wäre es
-FinalIntent Das wärs
-FinalIntent Danke
 WeekdayIntent Was gibt es am {Weekday}
 WeekdayIntent Was gibt es {Weekday}
 WeekdayIntent nach {Weekday}
@@ -71,7 +69,7 @@ VitalIntent nach Mensa Vital
 VitalIntent was es im mensa vital menü gibt
 
 
-Slottype: AMAZON.DATE
+Slottype: Weekday
 Values:
 Montag
 Dienstag
