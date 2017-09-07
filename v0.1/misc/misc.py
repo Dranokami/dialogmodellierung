@@ -48,8 +48,10 @@ def get_readable_date(mydate):
         readable_date = "dritten" #am dritten
     elif only_day == "07":
         readable_date = "siebten" #am siebten
-    elif int(only_day) <=19:
-        readable_date=only_day+"ten"
+    elif only_day == "08":
+        readable_date = "achten"
+    elif only_day == "09":
+        readable_date = "neunten" 
     else: 
         readable_date=only_day+"sten"
 

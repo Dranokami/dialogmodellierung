@@ -4,7 +4,7 @@
 import logging
 import datetime
 #import web_scraper.fake_scrape as mensa
-import web_scraper.mensa_web_scraping  as mensa
+import mensa_web_scraping as mensa
 import misc.misc as misc 
 
 from random import randint
@@ -69,21 +69,14 @@ def dayoptions():
 def vitalinfo():
     try: 
         food = session.attributes['food']
-        date = session.attributes['date']
-    except KeyError: #wenn die session kein food und date hat, hat man nich mit welcomegestartet und muss die info erst holen
-        food = mensa.scrape_pipeline() #get's a food dict or loading error
+    except KeyError:
+        food = mensa.scrape_pipeline()
         if type(food) == str:
             error_handling(food)
+
     todays_date=str(datetime.datetime.now()).split()[0]
-    date = misc.probable_date() #get's probably intended date as string, based on weekday and time (if mensa is open, today, if closed tommorows or mondays date!)
-    
-    vital = food[date]["vital"]
-    
-    if date == todays_date: #Wenn der heutige Tag noch relevant ist, kommt die heutige vital msg
-        option_msg = render_template('vitalmsg', vital=vital)
-    else: #wenn der tag abweichend ist, wird alternativ informiert, das die mensa zu hat
-        option_msg = render_template('alt_vitalmsg', vital=vital)
-    
+    date = misc.probable_date()
+    option_msg = food[date]["vital"]
     return question(option_msg)
 
 
@@ -93,7 +86,6 @@ def vitalinfo():
 def beilageninfo():
     try: 
         food = session.attributes['food']
-        date = session.attributes['date']
     except KeyError: #wenn die session kein food und date hat, hat man nich mit welcomegestartet und muss die info erst holen
         food = mensa.scrape_pipeline() #get's a food dict or loading error as string
         if type(food)==str:
@@ -102,7 +94,7 @@ def beilageninfo():
     todays_date=str(datetime.datetime.now()).split()[0]
     date = misc.probable_date() #get's probably intended date as string, based on weekday and time (if mensa is open, today, if closed tommorows or mondays date!)
     
-    beilagen = food[date]["beilagen"]
+    beilagen = food[date]["sidedish"]
     
     if date == todays_date: #Wenn der heutige Tag noch relevant ist, kommt die heutige vital msg
         option_msg = render_template('beilagen', beilagen=beilagen)
@@ -127,7 +119,8 @@ def weekday_request(mydate):
             error_handling(food)
 
     date = misc.probable_date() #get's probably intended date as string, based on weekday and time (if mensa is open, today, if closed tommorows or mondays date!)
-    
+    if mydate == '': # passiert, wenn wir ohne slot ungewollt in diesen Intent gelangen:
+        mydate = date #sicherheitshalbe den nächsten nehmen
     maindish = food[str(mydate)]["maindish"]
     veggiedish = food[str(mydate)]["veggiedish"]
 

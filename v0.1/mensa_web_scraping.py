@@ -109,20 +109,24 @@ def save_file(json_file):
 def scrape_pipeline():
     ''' mother function that merges all functions together
     returns dict for alexa '''
-    checked_json = check_json()
+    #checked_json = check_json()
 
-    if checked_json:
-        return read_json(checked_json)
-    else:
+    #if checked_json:
+    #    return read_json(checked_json)
+    #else:
+    if True:
         page_content = download_page()
         if page_content:
             food_dict = parse_web_page(page_content)
             json_file = convert_json(food_dict)
 
             if json_file:
-                save_file(json_file)
+                #save_file(json_file)
                 return food_dict
             else:
                 print 'error_01'
         else:
             print 'error_02'
+
+if __name__ == '__main__':
+	scrape_pipeline()
