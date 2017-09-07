@@ -27,11 +27,9 @@ def read_json(json_file):
         return jfile.read()
 
 
-def download_page(URL=None):
+def download_page(URL="http://www.studierendenwerk-bielefeld.de/essen-trinken/essen-und-trinken-in-mensen/bielefeld/mensa-gebaeude-x.html"):
     ''' function downloads the information of the current week
     returns text | error message'''
-    if URL == None:
-        URL = "http://www.studierendenwerk-bielefeld.de/essen-trinken/essen-und-trinken-in-mensen/bielefeld/mensa-gebaeude-x.html"
     r = requests.get(URL)
     if r.status_code == 200:
         r.encoding = "utf-8"
@@ -116,7 +114,7 @@ def scrape_pipeline():
     if checked_json:
         return read_json(checked_json)
     else:
-        page_content = download_page(checked_json)
+        page_content = download_page()
         if page_content:
             food_dict = parse_web_page(page_content)
             json_file = convert_json(food_dict)
