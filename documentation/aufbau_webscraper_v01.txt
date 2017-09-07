@@ -1,0 +1,60 @@
+## web scraper function structure
+
+from bs4 import BeautifulSoup
+import requests,re,datetime,json,codecs,os.path
+
+def check_json():
+    ''' checks if date-json can be found in folder'''
+    
+	if true:
+		return file_name
+	else:
+		false
+
+		
+def read_json(json_file):
+    ''' function reads json from folder
+    return json'''
+	
+	return read_json
+
+def download_page(URL='mensa-url'):
+    ''' function downloads the information of the current week
+    returns text | error message'''
+	
+	#URL = 'find here the url of the mensa web page'
+    # mensa_doc  = read url
+	
+	if true:
+		return text
+	else:
+		return 'error_msg'
+
+
+def parse_web_page(doc):
+    '''parses mensa structure
+    returns food information as dict'''
+    
+    return food_dict
+	
+
+def convert_json(food_dict):
+    '''function takes the food info and converts that to a json file
+    returns json file '''
+	
+	return json.dumps(food_dict)
+	
+
+def save_file(json_file):
+    ''' saves the json_file in folder'''
+    
+
+def scrape_pipeline():
+    ''' mother function that merges all functions together
+    returns dict for alexa '''
+        
+    # json has following structure: {'KW': {date1: {dish1: 'xxx'},
+                                                # dish2: 'xxx'}...,
+                                            #date1: {...}}
+    
+    
