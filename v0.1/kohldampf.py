@@ -3,8 +3,10 @@
 
 import logging
 import datetime
-import web_scraper as mensa
-import misc as misc 
+import web_scraper.fake_scrape as mensa
+#import web_scraper.mensa_scraper  as mensa
+import misc.misc as misc 
+
 from random import randint
 
 from flask import Flask, render_template
@@ -25,20 +27,30 @@ logging.getLogger("flask_ask").setLevel(logging.DEBUG)
 
 def new_game():
 
-    food = mensa.scrape_pipeline() #get's a food dict
+    food = mensa.scrape_pipeline() #get's a food dict or loading error
+    if food == "Seite konnte nicht aufgerufen werden":
+        welcome_msg = render_template('error_01')
+    elif food == "Die Struktur der Seite stimmt nicht":
+        welcome_msg = render_template('error_02')
+    else:
+        date = misc.probable_date() #get's probably intended date as string, based on weekday and time (if mensa is open, today, if closed tommorows or mondays date!)
 
-    date = misc.probable_date() #get's probably intended date as string, based on weekday and time (if mensa is open, today, if closed tommorows or mondays date!)
-    
-    maindish = food[date]["maindish"]
-    veggiedish = food[date]["veggiedish"]
-    
-    todays_date=str(datetime.datetime.now()).split()[0]
-    if date == todays_date: #Wenn der heutige Tag noch relevant ist, kommt die Standard welcome msg
-        welcome_msg = render_template('welcome', maindish=maindish, veggiedish=veggiedish)
-        #print "heutiges datum ist relevant und wird vorgelesen"
-    else: #wenn der tag abweichend ist, wird alternativ informiert, das die mensa zu hat
-        welcome_msg = render_template('alt_welcome', maindish=maindish, veggiedish=veggiedish)
-        #print "abweichendes datum soll vorgelesen werden"
+        maindish = food[date]["maindish"]
+        veggiedish = food[date]["veggiedish"]
+        
+        todays_date=str(datetime.datetime.now()).split()[0]
+        if date == todays_date: #Wenn der heutige Tag noch relevant ist, kommt die Standard welcome msg
+            welcome_msg = render_template('welcome', maindish=maindish, veggiedish=veggiedish)
+            #print "heutiges datum ist relevant und wird vorgelesen"
+        else: #wenn der tag abweichend ist, wird alternativ informiert, das die mensa zu hat
+            welcome_msg = render_template('alt_welcome', maindish=maindish, veggiedish=veggiedish)
+            #print "abweichendes datum soll vorgelesen werden"
+        
+
+        if type(food)==dict:
+            session.attributes['food'] = food #übergibt das food attribut und relevante datum der session 
+            session.attributes['date'] = date
+            #session.attributes['numbers'] = numbers[::-1]  # reverse   
     
     return question(welcome_msg)
 
@@ -46,39 +58,47 @@ def new_game():
 @ask.intent("MenuIntent")
 
 def menuoptions():
-    option_msg = render_template('menu')
-
-    session.attributes['numbers'] = numbers[::-1]  # reverse
+    option_msg = render_template('menu_options')
+    #session.attributes['numbers'] = numbers[::-1]  # reverse
     return question(option_msg)
+
 
 @ask.intent("DayIntent")
 
 def dayoptions():
-    option_msg = render_template('day')
-
+    option_msg = render_template('day_options')
     #session.attributes['numbers'] = numbers[::-1]  # reverse
-
     return question(option_msg)
+
 
 @ask.intent("VitalIntent")
 
-
 def vitalinfo():
-    vital = "Putengeschnetzeltes mit Basmatireis"
+    todays_date=str(datetime.datetime.now()).split()[0]
+    food = session.attributes['food']
+    date = session.attributes['date']
+    vital = food[date]["vital"]
 
-    option_msg = render_template('vitalmsg', vital = vital)
-
-    #session.attributes['numbers'] = numbers[::-1]  # reverse
+    if date == todays_date: #Wenn der heutige Tag noch relevant ist, kommt die heutige vital msg
+        option_msg = render_template('vitalmsg', vital=vital)
+    else: #wenn der tag abweichend ist, wird alternativ informiert, das die mensa zu hat
+        option_msg = render_template('alt_vitalmsg', vital=vital)
     return question(option_msg)
 
 
 @ask.intent("BeilagenIntent")
 
 def beilageninfo():
-    sidedish = "Salzkaroffeln und Vanillequark und Eis"
-    option_msg = render_template('beilagen', sidedish=sidedish)
+    todays_date=str(datetime.datetime.now()).split()[0]
+    food = session.attributes['food']
+    date = session.attributes['date']
+    beilagen = food[date]["beilagen"]
 
-    #session.attributes['numbers'] = numbers[::-1]  # reverse
+    if date == todays_date: #Wenn der heutige Tag noch relevant ist, kommt die heutige vital msg
+        beilagen = session.attributes["food"]["date"]["beilagen"]
+        option_msg = render_template('beilagen', beilagen=beilagen)
+    else: #wenn der tag abweichend ist, wird alternativ informiert, das die mensa zu hat
+        option_msg = render_template('alt_beilagen', beilagen=beilagen)
     return question(option_msg)
 
 
@@ -86,7 +106,6 @@ def beilageninfo():
 
 def end_msg():
     goodbye = render_template('quitmsg')
-
     return statement(goodbye)
 
 

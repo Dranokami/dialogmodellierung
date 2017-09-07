@@ -1,15 +1,17 @@
 welcome: Willkommen in der Teufelsküche der Uni Bielefeld! Heute gibt es in der Mensa {{maindish}} und {{veggiedish}}. Möchtest du etwas über andere Mahlzeiten oder ein anderes Datum wissen?
-
 alt_welcome: Die Mensa X hat heute schon geschlossen. Am nächsten Öffnungstag gibt es {{maindish}} und {{veggiedish}}. Möchtest du etwas über andere Mahlzeiten oder ein anderes Datum wissen?
 
-menu: Möchtest du etwas über Mensa Vital oder Beilagen wissen?
+menu_options: Möchtest du etwas über Mensa Vital oder Beilagen wissen?
 
-day: An welchem Wochentag möchtest du essen? 
+day_options: An welchem Wochentag möchtest du essen? 
+
+vitalmsg: In der Mensavital gibt es heute {vital} zu essen. Darf ich dir noch etwas über einen anderen Tag, zum Beispiel Montag oder eine andere Mahlzeit erzählen?
+alt_vital: In der Mensavital gibt es am nächsten Öffnungstag {vital} zu essen. Darf ich dir noch etwas über einen anderen Tag, zum Beispiel Dienstag oder eine andere Mahlzeit erzählen?
+
+beilagen: Als Beilage gibt es {{beilagen}}. Darf ich dir noch etwas über einen anderen Tag, zum Beispiel Mittwoch, oder andere Mahlzeit erzählen?
+alt_beilagen: Als Beilage gibt es am nächsten Öffnungstag {{beilagen}}. Darf ich dir noch etwas über einen anderen Tag, zum Beispiel Freitag oder eine andere Mahlzeit erzählen?
 
 quitmsg: Guten Appetit. Bis zum nächsten Mal.
 
-vitalmsg: In der Mensavital gibt es {vital} zu essen. Darf ich dir noch etwas über einen anderen Tag oder andere Mahlzeit erzählen?
-
-beilagen: Als Beilage gibt es {sidedish}. Darf ich dir noch etwas über einen anderen Tag oder andere Mahlzeit erzählen?
-
-#unclear_response: Entschuldigung. Bitte wiederhole deine Antwort.
+error_01: Die Seite kann derzeit leider nicht aufgerufen werden. Probiere es zu einem späteren Moment. 
+error_02: Leider kann die Seite nicht gelesen werden. Da muss wohl webscraper Julia nochmal ran. 
