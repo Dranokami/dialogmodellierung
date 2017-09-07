@@ -3,7 +3,7 @@
 
 import logging
 import datetime
-#import mensa_scraper as mensa
+import mensa_scraper as mensa
 
 from random import randint
 
@@ -23,23 +23,22 @@ logging.getLogger("flask_ask").setLevel(logging.DEBUG)
 
 def new_game():
 
-    #food = mensa.scrape_pipeline()
+    food = mensa.scrape_pipeline()
 
     day_and_mensa = date_and_mensa_open()
     
-
-    food = {
-    "2017-09-05" : {"maindish":"Alaskaseelachsfilet", "veggiedish":u"gefüllte Paprikaschote"},
-    "2017-09-06" : {"maindish":u"Hähnchenkeule", "veggiedish":u"Käsemedaillon"},
-    "2017-09-07" : {"maindish":u"Cordon Bleu", "veggiedish":u"Frühlingsröllchen"}  
-    }
+    if day_and_mensa[1] == "heute":     #wenn der Tag heute ist hat die Mensa noch auf, also ist der gemeinte Tag heute
+        intended_day = day_and_mensa[0]
+    else: 
+        intended_day = str(datetime.datetime.now() + datetime.timedelta(days=1)).split()[0] #morgen
     
     if day_and_mensa[1] == "heute":
         maindish = food[day_and_mensa[0]]["maindish"]
         veggiedish = food[day_and_mensa[0]]["veggiedish"]
         welcome_msg = render_template('welcome', maindish=maindish, veggiedish=veggiedish)
     else:
-        tommorow = str(datetime.datetime.now() + datetime.timedelta(days=1)).split()[0]
+        #check friday and skip to monday instead (holidays?)
+        tommorow = 
         maindish = food[tommorow]["maindish"]
         veggiedish = food[tommorow]["veggiedish"]
         welcome_msg = render_template('alt_welcome', maindish=maindish, veggiedish=veggiedish)
@@ -51,14 +50,16 @@ def new_game():
 def menuoptions():
     option_msg = render_template('menu')
 
-    #session.attributes['numbers'] = numbers[::-1]  # reverse
+    session.attributes['numbers'] = numbers[::-1]  # reverse
     return question(option_msg)
 
 @ask.intent("DayIntent")
 
 def dayoptions():
     option_msg = render_template('day')
+
     #session.attributes['numbers'] = numbers[::-1]  # reverse
+
     return question(option_msg)
 
 @ask.intent("VitalIntent")
@@ -106,45 +107,6 @@ def date_and_mensa_open():
         else:
             mensa="heute"
     return [now_is[0], mensa]
-
-def interactionmodel(): #this function isn't actually used but saves the online schema and utts
-    int_schema = {
-      "intents": [
-        {
-          "intent": "DayIntent"
-        },
-        {
-          "intent": "MenuIntent"
-        },
-        {
-          "intent": "FinalIntent"
-        },
-        {
-          "intent": "VitalIntent"
-        },
-        {
-          "intent": "BeilagenIntent"
-        }
-      ]
-    }
-    utts= """
-
-    DayIntent Wochentag
-    DayIntent Datum
-
-    MenuIntent andere Mahlzeiten
-    MenuIntent Mahlzeiten
-
-    FinalIntent Nein
-    FinalIntent Danke
-
-    BeilagenIntent dazu
-    BeilagenIntent Beilagen
-
-    VitalIntent Mensavital
-    VitalIntent Vital
-    
-    """
 
 
 if __name__ == '__main__':

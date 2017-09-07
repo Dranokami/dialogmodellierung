@@ -12,8 +12,8 @@ Links der verwendeten Internetquellen:
 to develop skills, when logged in as an Amazon Developer, go to 
 https://developer.amazon.com/edw/home.html#/skills
 
-get mensa data from  
-view-source:www.studierendenwerk-bielefeld.de/speiseplan/teaser/Menu.html
+get mensa data from  (view-source):  
+www.studierendenwerk-bielefeld.de/speiseplan/teaser/Menu.html
 
 for spoken testing, use:  
 https://echosim.io/welcome
