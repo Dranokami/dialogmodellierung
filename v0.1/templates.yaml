@@ -11,6 +11,8 @@ alt_vital: In der Mensavital gibt es am nächsten Öffnungstag {vital} zu essen.
 beilagen: Als Beilage gibt es {{beilagen}}. Darf ich dir noch etwas über einen anderen Tag, zum Beispiel Mittwoch, oder andere Mahlzeit erzählen?
 alt_beilagen: Als Beilage gibt es am nächsten Öffnungstag {{beilagen}}. Darf ich dir noch etwas über einen anderen Tag, zum Beispiel Freitag oder eine andere Mahlzeit erzählen?
 
+specdate: Am {{wochentag}} gibt es {{maindish}} und {{veggiedish}}. Möchtest du noch etwas über einen anderen Tag wissen?
+
 quitmsg: Guten Appetit. Bis zum nächsten Mal.
 
 error_01: Die Seite kann derzeit leider nicht aufgerufen werden. Probiere es zu einem späteren Moment. 

@@ -10,7 +10,8 @@ def scrape_pipeline():
         food = "Die Struktur der Seite stimmt nicht"
     else:
         food = {"2017-09-07":{"maindish":"Alaska", "veggiedish":"Tofu", "vital":"huhn","beilagen":"kartoffel"},
-                "2017-09-08":{"maindish":u"hähnchenschnitzel", "veggiedish": u"frühlingsröllchen","vital": u"döner","beilagen":"bulgur"}
+                "2017-09-08":{"maindish":u"hähnchenschnitzel", "veggiedish": u"frühlingsröllchen","vital": u"döner","beilagen":"bulgur"},
+                "2017-09-11":{"maindish":u"hähnchen thai curry", "veggiedish":"kartoffelauflauf"}
                 }
 
     return food

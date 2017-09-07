@@ -40,6 +40,21 @@ def probable_date():
     #print date, type(date)
     return date
 
+def get_readable_date(mydate):
+    only_day=mydate[-2:]
+    if only_day == "01":
+        readable_date = "ersten" #am ersten
+    elif only_day == "03":
+        readable_date = "dritten" #am dritten
+    elif only_day == "07":
+        readable_date = "siebten" #am siebten
+    elif int(only_day) <=19:
+        readable_date=only_day+"ten"
+    else: 
+        readable_date=only_day+"sten"
+
+    return readable_date
+
 
 if __name__ == '__main__':
     probable_date()

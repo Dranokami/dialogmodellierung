@@ -47,11 +47,10 @@ def new_game():
             #print "abweichendes datum soll vorgelesen werden"
         
 
-        if type(food)==dict:
+        if type(food)==dict: #sollte es sowieso sein
             session.attributes['food'] = food #übergibt das food attribut und relevante datum der session 
             session.attributes['date'] = date
-            #session.attributes['numbers'] = numbers[::-1]  # reverse   
-    
+
     return question(welcome_msg)
 
 
@@ -75,14 +74,22 @@ def dayoptions():
 
 def vitalinfo():
     todays_date=str(datetime.datetime.now()).split()[0]
-    food = session.attributes['food']
-    date = session.attributes['date']
-    vital = food[date]["vital"]
-
-    if date == todays_date: #Wenn der heutige Tag noch relevant ist, kommt die heutige vital msg
-        option_msg = render_template('vitalmsg', vital=vital)
-    else: #wenn der tag abweichend ist, wird alternativ informiert, das die mensa zu hat
-        option_msg = render_template('alt_vitalmsg', vital=vital)
+    try: 
+        food = session.attributes['food']
+        date = session.attributes['date']
+        vital = food[date]["vital"]
+    except KeyError: #wenn die session kein food und date hat, hat man nich mit welcomegestartet und muss die info erst holen
+        food = mensa.scrape_pipeline() #get's a food dict or loading error
+        if food == "Seite konnte nicht aufgerufen werden":
+            option_msg = render_template('error_01')
+        elif food == "Die Struktur der Seite stimmt nicht":
+            option_msg = render_template('error_02')
+        else:
+            date = misc.probable_date() #get's probably intended date as string, based on weekday and time (if mensa is open, today, if closed tommorows or mondays date!)
+            if date == todays_date: #Wenn der heutige Tag noch relevant ist, kommt die heutige vital msg
+                option_msg = render_template('vitalmsg', vital=vital)
+            else: #wenn der tag abweichend ist, wird alternativ informiert, das die mensa zu hat
+                option_msg = render_template('alt_vitalmsg', vital=vital)
     return question(option_msg)
 
 
@@ -90,16 +97,53 @@ def vitalinfo():
 
 def beilageninfo():
     todays_date=str(datetime.datetime.now()).split()[0]
-    food = session.attributes['food']
-    date = session.attributes['date']
-    beilagen = food[date]["beilagen"]
-
-    if date == todays_date: #Wenn der heutige Tag noch relevant ist, kommt die heutige vital msg
-        beilagen = session.attributes["food"]["date"]["beilagen"]
-        option_msg = render_template('beilagen', beilagen=beilagen)
-    else: #wenn der tag abweichend ist, wird alternativ informiert, das die mensa zu hat
-        option_msg = render_template('alt_beilagen', beilagen=beilagen)
+    try: 
+        food = session.attributes['food']
+        date = session.attributes['date']
+        vital = food[date]["vital"]
+        print("\nsession att existiert bereits und wurde erfolgriech geladen")
+    except KeyError: #wenn die session kein food und date hat, hat man nich mit welcomegestartet und muss die info erst holen
+        print("\n wurde insta gefragt, erstelle food")
+        food = mensa.scrape_pipeline() #get's a food dict or loading error
+        if food == "Seite konnte nicht aufgerufen werden":
+            option_msg = render_template('error_01')
+        elif food == "Die Struktur der Seite stimmt nicht":
+            option_msg = render_template('error_02')
+        else:
+            date = misc.probable_date() #get's probably intended date as string, based on weekday and time (if mensa is open, today, if closed tommorows or mondays date!)
+            if date == todays_date: #Wenn der heutige Tag noch relevant ist, kommt die heutige vital msg
+                beilagen = session.attributes["food"]["date"]["beilagen"]
+                option_msg = render_template('beilagen', beilagen=beilagen)
+            else: #wenn der tag abweichend ist, wird alternativ informiert, das die mensa zu hat
+                option_msg = render_template('alt_beilagen', beilagen=beilagen)
     return question(option_msg)
+
+
+
+@ask.intent("WeekdayIntent", mapping={'mydate': 'Weekday'})
+ 
+def weekday_request(mydate):
+    #todo: samstag /sonntag möglich machen als slot und abfangen
+    readable_day = misc.get_readable_date(mydate)
+    try:
+        food = session.attributes['food']
+        date = session.attributes['date']
+        vital = food[date]["vital"]
+    except KeyError: #wenn die session kein food und date hat, hat man nich mit welcomegestartet und muss die info erst holen
+        food = mensa.scrape_pipeline() #get's a food dict or loading error
+        if food == "Seite konnte nicht aufgerufen werden":
+            weekday_reply = render_template('error_01')
+        elif food == "Die Struktur der Seite stimmt nicht":
+            weekday_reply = render_template('error_02')
+        else:
+            date = misc.probable_date() #get's probably intended date as string, based on weekday and time (if mensa is open, today, if closed tommorows or mondays date!)
+            maindish = food[str(mydate)]["maindish"]
+            veggiedish = food[str(mydate)]["veggiedish"]
+
+            weekday_reply=render_template('specdate', wochentag=readable_day, maindish=maindish, veggiedish=veggiedish)
+
+    return question(weekday_reply)
+
 
 
 @ask.intent("FinalIntent")

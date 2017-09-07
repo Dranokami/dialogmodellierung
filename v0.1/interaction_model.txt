@@ -10,17 +10,71 @@ INTENTS:
     },
     {
       "intent": "FinalIntent"
+    },
+    {
+      "intent": "BeilagenIntent"
+    },
+    {
+      "intent": "VitalIntent"
+    },
+    {
+      "intent": "WeekdayIntent",
+      "slots": 
+      [
+        {
+        "name": "Weekday",
+        "type": "AMAZON.DATE"
+        }
+       ]
     }
   ]
 }
 
 
-  
 SAMPLE UTTS:
 
+DayIntent Ich möchte etwas über einen anderen Wochentag
+DayIntent Ich möchte etwas über ein Datum wissen
 DayIntent Wochentag
-DayIntent Datum
 MenuIntent Menü
 MenuIntent Mahlzeit
-FinalIntent Nein
+MenuIntent Ich möchte etwas über andere Mahlzeiten wissen
+MenuIntent Ich möchte etwas über andere Menüs wissen
+MenuIntent Ich möchte etwas über ein anderes Menü wissen
+FinalIntent Nein Danke
+FinalIntent Das wäre es
+FinalIntent Das wärs
 FinalIntent Danke
+WeekdayIntent Was gibt es am {Weekday}
+WeekdayIntent Was gibt es {Weekday}
+WeekdayIntent nach {Weekday}
+WeekdayIntent Ich möchte etwas über {Weekday} wissen
+WeekdayIntent Was es {Weekday} gibt
+WeekdayIntent Welche Menüs gibt es am {Weekday}
+WeekdayIntent Welche Menüs gibt es {Weekday}
+WeekdayIntent nach den Menüs am {Weekday}
+WeekdayIntent was es {Weekday} zu essen gibt
+WeekdayIntent Was gibt es {Weekday} zu essen
+WeekdayIntent Ich möchte wissen was es {Weekday} gibt
+WeekdayIntent Ich möchte wissen was es {Weekday} zu essen gibt
+BeilagenIntent nach Beilagen
+BeilagenIntent was es an Beilagen gibt
+BeilagenIntent was es für Beilagen gibt
+BeilagenIntent welche Beilagen es gibt
+BeilagenIntent welche Beilagen es dazu gibt
+BeilagenIntent ja ich will etwas über Beilagen wissen
+VitalIntent was ist mensa vital
+VitalIntent was ist das vital menü
+VitalIntent was ist das mensa vital menü
+VitalIntent ja ich will etwas über Mensa Vital wissen
+VitalIntent nach Mensa Vital
+VitalIntent was es im mensa vital menü gibt
+
+
+Slottype: AMAZON.DATE
+Values:
+Montag
+Dienstag
+Mittwoch
+Donnerstag
+Freitag
