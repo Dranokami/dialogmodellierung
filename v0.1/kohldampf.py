@@ -3,6 +3,8 @@
 
 import logging
 import datetime
+#import mensa_scraper as mensa
+
 from random import randint
 
 from flask import Flask, render_template
@@ -21,7 +23,11 @@ logging.getLogger("flask_ask").setLevel(logging.DEBUG)
 
 def new_game():
 
+    #food = mensa.scrape_pipeline()
+
     day_and_mensa = date_and_mensa_open()
+    
+
     food = {
     "2017-09-05" : {"maindish":"Alaskaseelachsfilet", "veggiedish":u"gefüllte Paprikaschote"},
     "2017-09-06" : {"maindish":u"Hähnchenkeule", "veggiedish":u"Käsemedaillon"},
@@ -34,8 +40,8 @@ def new_game():
         welcome_msg = render_template('welcome', maindish=maindish, veggiedish=veggiedish)
     else:
         tommorow = str(datetime.datetime.now() + datetime.timedelta(days=1)).split()[0]
-        maindish = food[tommorow][0]["maindish"]
-        veggiedish = food[tommorow][1]["veggiedish"]
+        maindish = food[tommorow]["maindish"]
+        veggiedish = food[tommorow]["veggiedish"]
         welcome_msg = render_template('alt_welcome', maindish=maindish, veggiedish=veggiedish)
     return question(welcome_msg)
 
@@ -57,8 +63,10 @@ def dayoptions():
 
 @ask.intent("VitalIntent")
 
+
 def vitalinfo():
-    vital = "Lecker essen"
+    vital = "Putengeschnetzeltes mit Basmatireis"
+
     option_msg = render_template('vitalmsg', vital = vital)
 
     #session.attributes['numbers'] = numbers[::-1]  # reverse
@@ -68,7 +76,7 @@ def vitalinfo():
 @ask.intent("BeilagenIntent")
 
 def beilageninfo():
-    sidedish = "Bulgur"
+    sidedish = "Salzkaroffeln und Vanillequark und Eis"
     option_msg = render_template('beilagen', sidedish=sidedish)
 
     #session.attributes['numbers'] = numbers[::-1]  # reverse
@@ -98,6 +106,46 @@ def date_and_mensa_open():
         else:
             mensa="heute"
     return [now_is[0], mensa]
+
+def interactionmodel(): #this function isn't actually used but saves the online schema and utts
+    int_schema = {
+      "intents": [
+        {
+          "intent": "DayIntent"
+        },
+        {
+          "intent": "MenuIntent"
+        },
+        {
+          "intent": "FinalIntent"
+        },
+        {
+          "intent": "VitalIntent"
+        },
+        {
+          "intent": "BeilagenIntent"
+        }
+      ]
+    }
+    utts= """
+
+    DayIntent Wochentag
+    DayIntent Datum
+
+    MenuIntent andere Mahlzeiten
+    MenuIntent Mahlzeiten
+
+    FinalIntent Nein
+    FinalIntent Danke
+
+    BeilagenIntent dazu
+    BeilagenIntent Beilagen
+
+    VitalIntent Mensavital
+    VitalIntent Vital
+    
+    """
+
 
 if __name__ == '__main__':
 

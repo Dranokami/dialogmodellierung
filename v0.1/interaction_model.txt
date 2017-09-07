@@ -1,0 +1,26 @@
+INTENTS:
+
+{
+  "intents": [
+    {
+      "intent": "DayIntent"
+    },
+    {
+      "intent": "MenuIntent"
+    },
+    {
+      "intent": "FinalIntent"
+    }
+  ]
+}
+
+
+  
+SAMPLE UTTS:
+
+DayIntent Wochentag
+DayIntent Datum
+MenuIntent Menü
+MenuIntent Mahlzeit
+FinalIntent Nein
+FinalIntent Danke

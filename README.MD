@@ -1,13 +1,13 @@
-We are Team SHK! We have the best Alexa Skills!
-
-TO START THIS:
-
-start ngrok, use ./ngrok http 5000
-run the code, start kohldampf.py
+**Dies ist ein Alexa Skill, welcher eine Mensaauskunft der Uni Bielefeld gibt.**
 
 
-LINKS:
+Um den Skill zu nutzen:
 
+*start ngrok, use 		<./ngrok http 5000>*
+*run the code, start 	<kohldampf.py>*
+
+
+Links der verwendeten Internetquellen:
 
 to develop skills, when logged in as an Amazon Developer, go to 
 https://developer.amazon.com/edw/home.html#/skills
