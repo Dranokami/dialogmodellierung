@@ -3,8 +3,8 @@
 
 import logging
 import datetime
-import mensa_scraper as mensa
-
+import web_scraper as mensa
+import misc as misc 
 from random import randint
 
 from flask import Flask, render_template
@@ -19,29 +19,27 @@ ask = Ask(app, "/")
 logging.getLogger("flask_ask").setLevel(logging.DEBUG)
 
 
+#This py get's handles all intents, external information about food get imported from the scraper, intented days (based on opening times) from misc function
+
 @ask.launch
 
 def new_game():
 
-    food = mensa.scrape_pipeline()
+    food = mensa.scrape_pipeline() #get's a food dict
 
-    day_and_mensa = date_and_mensa_open()
+    date = misc.probable_date() #get's probably intended date as string, based on weekday and time (if mensa is open, today, if closed tommorows or mondays date!)
     
-    if day_and_mensa[1] == "heute":     #wenn der Tag heute ist hat die Mensa noch auf, also ist der gemeinte Tag heute
-        intended_day = day_and_mensa[0]
-    else: 
-        intended_day = str(datetime.datetime.now() + datetime.timedelta(days=1)).split()[0] #morgen
+    maindish = food[date]["maindish"]
+    veggiedish = food[date]["veggiedish"]
     
-    if day_and_mensa[1] == "heute":
-        maindish = food[day_and_mensa[0]]["maindish"]
-        veggiedish = food[day_and_mensa[0]]["veggiedish"]
+    todays_date=str(datetime.datetime.now()).split()[0]
+    if date == todays_date: #Wenn der heutige Tag noch relevant ist, kommt die Standard welcome msg
         welcome_msg = render_template('welcome', maindish=maindish, veggiedish=veggiedish)
-    else:
-        #check friday and skip to monday instead (holidays?)
-        tommorow = 
-        maindish = food[tommorow]["maindish"]
-        veggiedish = food[tommorow]["veggiedish"]
+        #print "heutiges datum ist relevant und wird vorgelesen"
+    else: #wenn der tag abweichend ist, wird alternativ informiert, das die mensa zu hat
         welcome_msg = render_template('alt_welcome', maindish=maindish, veggiedish=veggiedish)
+        #print "abweichendes datum soll vorgelesen werden"
+    
     return question(welcome_msg)
 
 
@@ -91,22 +89,6 @@ def end_msg():
 
     return statement(goodbye)
 
-
-def date_and_mensa_open():
-    #uses datetime and returns a list with [0]the concrete day/month for the db query and tommorow or today regarding a closed mensa 
-    now_is=str(datetime.datetime.now()).split()
-    #now now_is[0] looks like 2017-09-05 and [1] like 19:46:07.851512
-    hour=int(now_is[1].split(":")[0])
-    if hour <= 13:
-        mensa="heute"
-    elif hour >= 15:
-        mensa="morgen"
-    elif hour == 14:
-        if int(now_is[1].split(":")[1]) >=30:
-            mensa="morgen"
-        else:
-            mensa="heute"
-    return [now_is[0], mensa]
 
 
 if __name__ == '__main__':
