@@ -43,7 +43,7 @@ DayIntent erzähl mir etwas zu wochentagen
 MenuIntent Menü
 MenuIntent über Mahlzeit
 MenuIntent Mahlzeiten
-MenuIntent was gibt es für Mahlzeiten?
+MenuIntent was gibt es für Mahlzeiten
 MenuIntent Ich möchte etwas über andere Mahlzeiten wissen
 MenuIntent Ich möchte etwas über andere Menüs wissen
 MenuIntent Ich möchte etwas über ein anderes Menü wissen
