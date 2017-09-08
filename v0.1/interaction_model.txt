@@ -9,10 +9,16 @@ INTENTS:
       "intent": "MenuIntent"
     },
     {
-      "intent": "FinalIntent"
+      "intent": "StopIntent"
+    },
+    {
+      "intent": "CancelIntent"
     },
     {
       "intent": "BeilagenIntent"
+    },
+    {
+      "intent": "VeggieIntent"
     },
     {
       "intent": "VitalIntent"
@@ -41,11 +47,14 @@ MenuIntent Mahlzeit
 MenuIntent Ich möchte etwas über andere Mahlzeiten wissen
 MenuIntent Ich möchte etwas über andere Menüs wissen
 MenuIntent Ich möchte etwas über ein anderes Menü wissen
-FinalIntent Nein Danke
-FinalIntent Das wäre es
 WeekdayIntent Was gibt es am {Weekday}
 WeekdayIntent Was gibt es {Weekday}
 WeekdayIntent nach {Weekday}
+WeekdayIntent für den {Weekday}
+WeekdayIntent bitte den {Weekday}
+WeekdayIntent Was kann ich {Weekday} bekommen
+WeekdayIntent ich möchte gerne wissen was es  {Weekday} gibt
+WeekdayIntent ja, gerne würde ich etwas über {Weekday} wissen
 WeekdayIntent Ich möchte etwas über {Weekday} wissen
 WeekdayIntent Was es {Weekday} gibt
 WeekdayIntent Welche Menüs gibt es am {Weekday}
@@ -61,13 +70,26 @@ BeilagenIntent was es für Beilagen gibt
 BeilagenIntent welche Beilagen es gibt
 BeilagenIntent welche Beilagen es dazu gibt
 BeilagenIntent ja ich will etwas über Beilagen wissen
+BeilagenIntent bitte nenne mir die Beilagen
+BeilagenIntent kannst du mir die Beilagen nennen
+BeilagenIntent ich würde gerne zu den Beilagen wissen
 VitalIntent was ist mensa vital
 VitalIntent was ist das vital menü
 VitalIntent was ist das mensa vital menü
 VitalIntent ja ich will etwas über Mensa Vital wissen
 VitalIntent nach Mensa Vital
+VitalIntent bitte nenne mir das Angebot für Mensa Vital
+VitalIntent was gibt es als mensa vital
+VitalIntent erzähle mir was es als mensa vital gibt
+VitalIntent sag mir das Mensa Vital angebot
 VitalIntent was es im mensa vital menü gibt
-
+VeggieIntent Was gibt es heute ohne Fleisch
+VeggieIntent Was bietet das vegetarische Essen heute
+VeggieIntent Was gibt's heute vegetarisches
+VeggieIntent Was sagt das vegetarische heute
+VeggieIntent nach dem vegetarischen angebot
+VeggieIntent nach dem vegetarischen essen
+VeggieIntent nach dem vegetarischen Menü
 
 Slottype: Weekday
 Values:
@@ -76,3 +98,5 @@ Dienstag
 Mittwoch
 Donnerstag
 Freitag
+Morgen
+Übermorgen

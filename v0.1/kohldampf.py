@@ -21,6 +21,10 @@ ask = Ask(app, "/")
 logging.getLogger("flask_ask").setLevel(logging.DEBUG)
 
 
+def error_handling(error):
+    error_msg = render_template(error)
+    return statement(error_msg)
+
 #This py get's handles all intents, external information about food gets imported from the scraper, intented days (based on opening times) from misc function
 
 @ask.launch
@@ -100,7 +104,7 @@ def beilageninfo():
         option_msg = render_template('beilagen', beilagen=beilagen)
     else: #wenn der tag abweichend ist, wird alternativ informiert, das die mensa zu hat
         option_msg = render_template('alt_beilagen', beilagen=beilagen)
-    
+
     return question(option_msg)
 
 
@@ -120,26 +124,64 @@ def weekday_request(mydate):
 
     date = misc.probable_date() #get's probably intended date as string, based on weekday and time (if mensa is open, today, if closed tommorows or mondays date!)
     if mydate == '': # passiert, wenn wir ohne slot ungewollt in diesen Intent gelangen:
-        mydate = date #sicherheitshalbe den nächsten nehmen
+        mydate = date #sicherheitshalbe heute/morgen datum nehmen
     maindish = food[str(mydate)]["maindish"]
     veggiedish = food[str(mydate)]["veggiedish"]
 
     weekday_reply=render_template('specdate', wochentag=readable_day, maindish=maindish, veggiedish=veggiedish)
+    #first, check if a dialouge_sate exists:
+    try:
+        grounded = session.attributes['dialogue_state']
+        #if it exists, we save the date that was talked about here
+        grounded['talked_date'] = str(mydate)
+        #and give it back as session attribute
+        session.attributes['dialogue_state']
+    except: #wenn es keinen gibt, erstellen wir es
+        grounded{'talked_date'} = str(mydate) #saves what was talked about before 
+
 
     return question(weekday_reply)
 
+@ask.intent("VeggieIntent")
+
+def myveggie():
+    try: 
+        food = session.attributes['food']
+    except KeyError: #wenn die session kein food und date hat, hat man nich mit welcomegestartet und muss die info erst holen
+        food = mensa.scrape_pipeline() #get's a food dict or loading error as string
+        if type(food)==str:
+            error_handling(food)
+    
+    todays_date=str(datetime.datetime.now()).split()[0]
+    date = misc.probable_date() #get's probably intended date as string, based on weekday and time (if mensa is open, today, if closed tommorows or mondays date!)
+    
+    veggiedish = food[date]["veggiedish"]
+
+    if date == todays_date: #Wenn der heutige Tag noch relevant ist, kommt die heutige vital msg
+        option_msg = render_template('veggie_msg', veggiedish=veggiedish)
+    else: #wenn der tag abweichend ist, wird alternativ informiert, das die mensa zu hat
+        option_msg = render_template('alt_veggie_msg', veggiedish=veggiedish)
 
 
-@ask.intent("FinalIntent")
+    return question(option_msg)
+   
+
+
+
+@ask.intent("StopIntent")
 
 def end_msg():
     goodbye = render_template('quitmsg')
     return statement(goodbye)
 
 
-def error_handling(error):
-    error_msg = render_template(error)
-    return statement(error_msg)
+
+@ask.intent("CancelIntent")
+
+def end_msg():
+    goodbye = render_template('quitmsg')
+    return statement(goodbye)
+
 
 
 

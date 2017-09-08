@@ -15,5 +15,10 @@ specdate: Am {{wochentag}} gibt es {{maindish}} und {{veggiedish}}. Möchtest du
 
 quitmsg: Guten Appetit. Bis zum nächsten Mal.
 
+veggie_msg: Als vegetarisches Menü gibt es {{veggiedish}}. Was möchtest du sonst noch wissen?
+
+alt_veggie_msg: Am nächsten öffnungs tag gibt es als vegetarisches Menü {{veggiedish}}. Was möchtest du sonst noch wissen?
+
+
 error_01: Die Seite kann derzeit leider nicht aufgerufen werden. Probiere es zu einem späteren Moment. 
 error_02: Leider kann die Seite nicht gelesen werden. Da muss wohl webscraper Julia nochmal ran. 
