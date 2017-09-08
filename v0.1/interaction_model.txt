@@ -41,7 +41,9 @@ DayIntent Ich möchte etwas über ein Datum wissen
 DayIntent Wochentagen
 DayIntent erzähl mir etwas zu wochentagen
 MenuIntent Menü
-MenuIntent Mahlzeit
+MenuIntent über Mahlzeit
+MenuIntent Mahlzeiten
+MenuIntent was gibt es für Mahlzeiten?
 MenuIntent Ich möchte etwas über andere Mahlzeiten wissen
 MenuIntent Ich möchte etwas über andere Menüs wissen
 MenuIntent Ich möchte etwas über ein anderes Menü wissen

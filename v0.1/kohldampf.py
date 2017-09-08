@@ -87,7 +87,7 @@ def vitalinfo():
     date = misc.probable_date()
 
     vitales_essen = food[date]["vital"]
-
+    #print food[date]["vital"]
     if todays_date == date: 
         option_msg = render_template('vital_msg', vital =vitales_essen)
     else: 
@@ -137,17 +137,10 @@ def weekday_request(mydate):
     
     readable_day = misc.get_readable_date(mydate)
 
-    #except: 
-    #    return error_handling("error_03")
-    
-    #print "übergeben wurde", str(mydate)
-    try: 
-        weekend_bool = misc.is_weekend(str(mydate)) #returns true if the requestet date is a weekend
-        if weekend_bool == True:
-            #print "und das ist ein wochenende"
-            mydate = date
-    except:
-        error_handling("error_03")
+    weekend_bool = misc.is_weekend(str(mydate)) #returns true if the requestet date is a weekend
+    if weekend_bool == True:
+        print "und das ist ein wochenende"
+        mydate = date
     
     try:
         food = mensa.read_json(mensa.check_json())
@@ -183,7 +176,7 @@ def myveggie():
     try: 
         food = mensa.read_json(mensa.check_json())
         dict(food)
-    except KeyError: #wenn die session kein food und date hat, hat man nich mit welcomegestartet und muss die info erst holen
+    except: #wenn die session kein food und date hat, hat man nich mit welcomegestartet und muss die info erst holen
         food = mensa.scrape_pipeline() #get's a food dict or loading error as string
         if type(food)==str:
             error_handling(food)

@@ -1,12 +1,12 @@
-welcome: Willkommen in der Teufelsküche der Uni Bielefeld! Heute gibt es als Hauptgericht {{maindish}} sowie {{veggiedish}}. Ich kann dir etwas zu anderen Mahlzeiten oder Wochentagen erzählen.
-alt_welcome: Die Mensa X hat heute schon geschlossen. Am nächsten Öffnungs tag gibt es {{maindish}} und {{veggiedish}}. Möchtest du etwas über andere Mahlzeiten oder ein anderes Datum wissen?
+welcome: Willkommen in der Teufelsküche der Uni Bielefeld! Heute gibt es als Hauptgericht {{maindish}}. Vegetarisch gibt es {{veggiedish}}. Ich kann dir etwas zu anderen Mahlzeiten oder Wochentagen erzählen.
+alt_welcome: Die Mensa X hat leider geschlossen. Am nächsten Öffnungs tag gibt es als Hauptgericht {{maindish}}. Vegetarisch gibt es {{veggiedish}}. Ich kann dir etwas zu anderen Mahlzeiten oder Wochentagen erzählen.
 
 menu_options: Möchtest du etwas über Mensa Vital oder Beilagen wissen?
 
 day_options: An welchem Wochentag möchtest du essen? 
 
-vital_msg: In der Mensavital gibt es heute {vital} zu essen. Darf ich dir noch etwas über einen anderen Tag, zum Beispiel Montag oder eine andere Mahlzeit erzählen?
-alt_vital_msg: In der Mensavital gibt es am nächsten Öffnungs tag {vital} zu essen. Darf ich dir noch etwas über einen anderen Tag, zum Beispiel Dienstag oder eine andere Mahlzeit erzählen?
+vital_msg: In der Mensavital gibt es heute {{vital}} zu essen. Darf ich dir noch etwas über einen anderen Tag, zum Beispiel Montag oder eine andere Mahlzeit erzählen?
+alt_vital_msg: In der Mensavital gibt es am nächsten Öffnungs tag {{vital}} zu essen. Darf ich dir noch etwas über einen anderen Tag, zum Beispiel Dienstag oder eine andere Mahlzeit erzählen?
 
 beilagen: Als Beilage gibt es {{beilagen}}. Darf ich dir noch etwas über einen anderen Tag, zum Beispiel Mittwoch, oder andere Mahlzeiten erzählen?
 alt_beilagen: Als Beilage gibt es am nächsten Öffnungs tag {{beilagen}}. Darf ich dir noch etwas über einen anderen Tag, zum Beispiel Freitag oder eine andere Mahlzeit erzählen?

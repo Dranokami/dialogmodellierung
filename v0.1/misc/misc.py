@@ -42,44 +42,29 @@ def probable_date():
     return date
 
 def get_readable_date(mydate): #readable to mo/di/mi/do/fr abstürz bei heute + vegetarisch 
-    only_day=mydate[-2:]
-    if only_day == "01":
-        readable_date = "ersten" #am ersten
-    elif only_day == "03":
-        readable_date = "dritten" #am dritten
-    elif only_day == "07":
-        readable_date = "siebten" #am siebten
-    elif only_day == "08":
-        readable_date = "achten"
-    elif only_day == "09":
-        readable_date = "neunten" 
-    elif int(only_day)<=19: 
-        readable_date=only_day+"ten"
-    else:
-        readable_date=only_day+"sten"
-    
+    only_day=mydate[-2:]    
     splitted = mydate.split("-")
     year = int(splitted[0])
     month = int(splitted[1])
     day = int(splitted[2])
 
-    if datetime.date(year, month, day).isoweekday() == 0:
+    if datetime.date(year, month, day).isoweekday() == 1:
         week_day = 'Montag' 
-    elif datetime.date(year, month, day).isoweekday() == 0:
+    elif datetime.date(year, month, day).isoweekday() == 2:
         week_day = 'Dienstag'
-    elif datetime.date(year, month, day).isoweekday() == 0:
+    elif datetime.date(year, month, day).isoweekday() == 3:
         week_day = 'Mittwoch'
-    elif datetime.date(year, month, day).isoweekday() == 0:
+    elif datetime.date(year, month, day).isoweekday() == 4:
         week_day = 'Donnerstag'
-    elif datetime.date(year, month, day).isoweekday() == 0:
+    elif datetime.date(year, month, day).isoweekday() == 5:
         week_day = 'Freitag'
-    elif datetime.date(year, month, day).isoweekday() == 0:
-        week_day = 'Samstag'
-    elif datetime.date(year, month, day).isoweekday() == 0:
-        week_day = 'Sonntag'
+    elif datetime.date(year, month, day).isoweekday() == 6:
+        week_day = 'Montag'
+    elif datetime.date(year, month, day).isoweekday() == 7:
+        week_day = 'Montag'
         
     
-    return (week_day, ', den ',readable_date)
+    return week_day
 
 
 
