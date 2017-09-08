@@ -23,7 +23,10 @@ logging.getLogger("flask_ask").setLevel(logging.DEBUG)
 
 def error_handling(error):
     error_msg = render_template(error)
-    return statement(error_msg)
+    if error != "error_03":
+        return statement(error_msg)
+    else: #auf error drei kann man antworten bzw soll
+        return question(error_msg)
 
 #This py get's handles all intents, external information about food gets imported from the scraper, intented days (based on opening times) from misc function
 
@@ -45,8 +48,9 @@ def new_game():
     else: #wenn der tag abweichend ist, wird alternativ informiert, das die mensa zu hat
         welcome_msg = render_template('alt_welcome', maindish=maindish, veggiedish=veggiedish)
 
-    session.attributes['food'] = food #übergibt das food attribut und relevante datum der session 
-    session.attributes['date'] = date
+    #session.attributes['food'] = food #übergibt das food attribut und relevante datum der session 
+
+    #session.attributes['date'] = date
 
     return question(welcome_msg)
 
@@ -72,15 +76,23 @@ def dayoptions():
 
 def vitalinfo():
     try: 
-        food = session.attributes['food']
-    except KeyError:
+        food = mensa.read_json(mensa.check_json())
+        dict(food)
+    except:
         food = mensa.scrape_pipeline()
         if type(food) == str:
             error_handling(food)
 
     todays_date=str(datetime.datetime.now()).split()[0]
     date = misc.probable_date()
-    option_msg = food[date]["vital"]
+
+    vitales_essen = food[date]["vital"]
+
+    if todays_date == date: 
+        option_msg = render_template('vital_msg', vital =vitales_essen)
+    else: 
+        option_msg = render_template('alt_vital_msg', vital = vitales_essen)
+
     return question(option_msg)
 
 
@@ -89,8 +101,9 @@ def vitalinfo():
 
 def beilageninfo():
     try: 
-        food = session.attributes['food']
-    except KeyError: #wenn die session kein food und date hat, hat man nich mit welcomegestartet und muss die info erst holen
+        food = mensa.read_json(mensa.check_json())
+        dict(food)
+    except: #wenn die session kein food und date hat, hat man nich mit welcomegestartet und muss die info erst holen
         food = mensa.scrape_pipeline() #get's a food dict or loading error as string
         if type(food)==str:
             error_handling(food)
@@ -115,20 +128,24 @@ def weekday_request(mydate):
     #todo: samstag /sonntag möglich machen als slot und abfangen
 
     date = misc.probable_date() #get's probably intended date as string, based on weekday and time (if mensa is open, today, if closed tommorows or mondays date!)
-    try: 
+    
+    try: #versucht, das ausgesprochene datum readable zu konvertieren (zu mo/di/mi/do/fr als string)
         readable_day = misc.get_readable_date(mydate)
     except: 
         error_handling("error_03")
     
     #print "übergeben wurde", str(mydate)
-    weekend_bool = misc.is_weekend(str(mydate)) #returns true if the requestet date is a weekend
-    if weekend_bool == True:
-        #print "und das ist ein wochenende"
-        mydate = date
+    try: 
+        weekend_bool = misc.is_weekend(str(mydate)) #returns true if the requestet date is a weekend
+        if weekend_bool == True:
+            #print "und das ist ein wochenende"
+            mydate = date
+    except:
+        error_handling("error_03")
     
     try:
-        food = session.attributes['food']
-        date = session.attributes['date']
+        food = mensa.read_json(mensa.check_json())
+        dict(food)
     except KeyError: #wenn die session kein food und date hat, hat man nich mit welcomegestartet und muss die info erst holen
         food = mensa.scrape_pipeline() #get's a food dict or loading error as string
         if type(food)==str:
@@ -158,7 +175,8 @@ def weekday_request(mydate):
 
 def myveggie():
     try: 
-        food = session.attributes['food']
+        food = mensa.read_json(mensa.check_json())
+        dict(food)
     except KeyError: #wenn die session kein food und date hat, hat man nich mit welcomegestartet und muss die info erst holen
         food = mensa.scrape_pipeline() #get's a food dict or loading error as string
         if type(food)==str:
@@ -173,7 +191,6 @@ def myveggie():
         option_msg = render_template('veggie_msg', veggiedish=veggiedish)
     else: #wenn der tag abweichend ist, wird alternativ informiert, das die mensa zu hat
         option_msg = render_template('alt_veggie_msg', veggiedish=veggiedish)
-
 
     return question(option_msg)
    

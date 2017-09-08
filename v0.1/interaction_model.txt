@@ -38,7 +38,8 @@ SAMPLE UTTS:
 
 DayIntent Ich möchte etwas über einen anderen Wochentag
 DayIntent Ich möchte etwas über ein Datum wissen
-DayIntent Wochentag
+DayIntent Wochentagen
+DayIntent erzähl mir etwas zu wochentagen
 MenuIntent Menü
 MenuIntent Mahlzeit
 MenuIntent Ich möchte etwas über andere Mahlzeiten wissen
@@ -88,6 +89,8 @@ VeggieIntent Was es ohne fleisch gibt
 VeggieIntent nach dem vegetarischen angebot
 VeggieIntent nach dem vegetarischen essen
 VeggieIntent nach dem vegetarischen Menü
+VeggieIntent erzähle mir was es vegetarisches menü gibt
+VeggieIntent und sag mir was es vegetarisch gibt
 FinalIntent Nein danke
 FinalIntent Das wäre es
 FinalIntent Tschüß
