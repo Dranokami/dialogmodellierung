@@ -1,4 +1,4 @@
-welcome: Willkommen in der Teufelsküche der Uni Bielefeld! Heute gibt es in der Mensa {{maindish}} und {{veggiedish}}. Möchtest du etwas über andere Mahlzeiten oder ein anderes Datum wissen?
+welcome: Willkommen in der Teufelsküche der Uni Bielefeld! Heute gibt es als Hauptgericht {{maindish}} sowie {{veggiedish}}. Möchtest du etwas über andere Mahlzeiten oder ein anderes Datum wissen?
 alt_welcome: Die Mensa X hat heute schon geschlossen. Am nächsten Öffnungs tag gibt es {{maindish}} und {{veggiedish}}. Möchtest du etwas über andere Mahlzeiten oder ein anderes Datum wissen?
 
 menu_options: Möchtest du etwas über Mensa Vital oder Beilagen wissen?
@@ -21,4 +21,5 @@ alt_veggie_msg: Am nächsten öffnungs tag gibt es als vegetarisches Menü {{veg
 
 
 error_01: Die Seite kann derzeit leider nicht aufgerufen werden. Probiere es zu einem späteren Moment. 
-error_02: Leider kann die Seite nicht gelesen werden. Da muss wohl webscraper Julia nochmal ran. 
+error_02: Leider kann die Seite nicht gelesen werden. Da muss wohl webscraper Julia nochmal ran.
+error_03: An welchem Wochentag? 

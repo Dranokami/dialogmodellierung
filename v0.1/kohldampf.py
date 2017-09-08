@@ -115,7 +115,10 @@ def weekday_request(mydate):
     #todo: samstag /sonntag möglich machen als slot und abfangen
 
     date = misc.probable_date() #get's probably intended date as string, based on weekday and time (if mensa is open, today, if closed tommorows or mondays date!)
-    readable_day = misc.get_readable_date(mydate)
+    try: 
+        readable_day = misc.get_readable_date(mydate)
+    except: 
+        error_handling("error_03")
     
     #print "übergeben wurde", str(mydate)
     weekend_bool = misc.is_weekend(str(mydate)) #returns true if the requestet date is a weekend

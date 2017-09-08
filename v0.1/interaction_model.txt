@@ -70,11 +70,10 @@ BeilagenIntent ja ich will etwas über Beilagen wissen
 BeilagenIntent bitte nenne mir die Beilagen
 BeilagenIntent kannst du mir die Beilagen nennen
 BeilagenIntent ich würde gerne zu den Beilagen wissen
-VitalIntent was ist mensa vital
+VitalIntent mensa vital
 VitalIntent was ist das vital menü
 VitalIntent was ist das mensa vital menü
 VitalIntent ja ich will etwas über Mensa Vital wissen
-VitalIntent nach Mensa Vital
 VitalIntent bitte nenne mir das Angebot für Mensa Vital
 VitalIntent was gibt es als mensa vital
 VitalIntent erzähle mir was es als mensa vital gibt
@@ -84,6 +83,8 @@ VeggieIntent Was gibt es heute ohne Fleisch
 VeggieIntent Was bietet das vegetarische Essen heute
 VeggieIntent Was gibt's heute vegetarisches
 VeggieIntent Was sagt das vegetarische heute
+VeggieIntent Was es vegetarisches gibt
+VeggieIntent Was es ohne fleisch gibt
 VeggieIntent nach dem vegetarischen angebot
 VeggieIntent nach dem vegetarischen essen
 VeggieIntent nach dem vegetarischen Menü
