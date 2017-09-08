@@ -57,7 +57,31 @@ def get_readable_date(mydate): #readable to mo/di/mi/do/fr abstürz bei heute + 
         readable_date=only_day+"ten"
     else:
         readable_date=only_day+"sten"
-    return readable_date
+    
+    splitted = mydate.split("-")
+    year = int(splitted[0])
+    month = int(splitted[1])
+    day = int(splitted[2])
+
+    if datetime.date(year, month, day).isoweekday() == 0:
+        week_day = 'Montag' 
+    elif datetime.date(year, month, day).isoweekday() == 0:
+        week_day = 'Dienstag'
+    elif datetime.date(year, month, day).isoweekday() == 0:
+        week_day = 'Mittwoch'
+    elif datetime.date(year, month, day).isoweekday() == 0:
+        week_day = 'Donnerstag'
+    elif datetime.date(year, month, day).isoweekday() == 0:
+        week_day = 'Freitag'
+    elif datetime.date(year, month, day).isoweekday() == 0:
+        week_day = 'Samstag'
+    elif datetime.date(year, month, day).isoweekday() == 0:
+        week_day = 'Sonntag'
+        
+    
+    return (week_day, ', den ',readable_date)
+
+
 
 def is_weekend(given_date):
     #returns True if day is weekend, false if not 
