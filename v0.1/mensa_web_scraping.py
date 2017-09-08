@@ -4,7 +4,6 @@ from bs4 import BeautifulSoup
 import requests
 import datetime
 import json
-import codecs
 import re
 import os.path
 
@@ -12,20 +11,26 @@ import os.path
 def check_json():
     ''' function checks if actual json is available
     returns true | false'''
+    # TODO: überprüfen, ob os.path() in Linux auf gleiche Weise funktioniert, wie in Win 
+    # der pfad muss an jeweiligen "Start-ort" angepasst werden (also von wo das Modul geladen und gestartet wird)
+    # ich weiß nicht, ob es (für unsere Zwecke) ausreichen würde einfach ein "./web_scraper/" oder so davor zu setzen
+    # glaube zudem, dass zwischen Windoof- und Unix-Systemen einen unterschied macht, ob man "/" oder "\"
+    # vielleicht gibt die doku ja was her?
+    
     today = datetime.date.today()
     last_monday = today + datetime.timedelta(days=-today.weekday(), weeks=0)
     if os.path.isfile(str(last_monday)[:10] + ".json"):
-        return os.path.basename(str(last_monday)[:10] + ".json")
+        f = os.path.basename(str(last_monday)[:10] + ".json")
+        return f
     else:
         return False
-
-
-def read_json(json_file):
+        
+def read_json(file_name):
     ''' function reads json from folder
-    return json'''
-    with codecs.open(json_file, 'r') as jfile:
-        return jfile.read()
-
+    returns json'''
+    with open(file_name, 'r') as jfile:
+        j_file = json.load(jfile)
+    return j_file
 
 def download_page(URL="http://www.studierendenwerk-bielefeld.de/essen-trinken/essen-und-trinken-in-mensen/bielefeld/mensa-gebaeude-x.html"):
     ''' function downloads the information of the current week
@@ -46,8 +51,6 @@ def parse_web_page(doc):
     
     # parsing via beautifulsoup
     soup = BeautifulSoup(doc, 'html.parser')
-
-    
 
     # sind in der ersten Woche 5 Menüs?
     # sind in der ersten und zweiten woche 10 menüs?
@@ -73,7 +76,7 @@ def parse_web_page(doc):
 
     for heading in soup.findAll('div', class_='mensa plan'):
         if not heading:
-            print "Keine Auskunft möglich. Möglicherweise wurde die Seite verändert."
+            print "error_01"
              # testing ob struktur übereinstimmt --> none-type?
         else:
             temp_dict = dict()
@@ -94,24 +97,27 @@ def convert_json(food_dict):
     if type(food_dict) == dict:  # das kann dann später weg. nur noch diese json.dump(dictionary)
         return json.dumps(food_dict)
     else:
-        return "Die Struktur der Seite stimmt nicht"
+        print "error_02"
 
 
-def save_file(json_file):
+def save2json(food_dict):
     ''' saves the json_file in folder'''
     today = datetime.date.today()
     week_date = today + datetime.timedelta(days=-today.weekday(), weeks=0)
-
-    with codecs.open(str(week_date) + '.json', 'w') as outputfile:
-        outputfile.write(json_file)
+    with open(str(week_date) + '.json', 'w') as outputfile:
+        return json.dump(food_dict,outputfile)
 
 
 def scrape_pipeline():
     ''' mother function that merges all functions together
     returns dict for alexa '''
+    # Kommentar von Julia: ich schätze, dass es an dieser Stelle zu einem Fehler kann, \
+    #weil eine Text-Datei weitergereicht wurde (wenn überhaupt mal eine .json generiert wurde) \
+    # denn sobald hier die Datei eingelesen wird, enststeht ein STRING und der löst in der kohldampf.py an vielen Stellen einen ERROR aus
+    
     #checked_json = check_json()
-
     #if checked_json:
+    #    print 'hello'
     #    return read_json(checked_json)
     #else:
     if True:
@@ -119,14 +125,13 @@ def scrape_pipeline():
         if page_content:
             food_dict = parse_web_page(page_content)
             json_file = convert_json(food_dict)
-
             if json_file:
-                #save_file(json_file)
+                save2json(json_file)
                 return food_dict
             else:
-                print 'error_01'
+                print "error_01"
         else:
-            print 'error_02'
+            print "error_02"
 
 if __name__ == '__main__':
 	scrape_pipeline()
