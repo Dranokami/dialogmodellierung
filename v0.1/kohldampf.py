@@ -126,13 +126,19 @@ def beilageninfo():
  
 def weekday_request(mydate):
     #todo: samstag /sonntag möglich machen als slot und abfangen
-
+    
     date = misc.probable_date() #get's probably intended date as string, based on weekday and time (if mensa is open, today, if closed tommorows or mondays date!)
     
-    try: #versucht, das ausgesprochene datum readable zu konvertieren (zu mo/di/mi/do/fr als string)
-        readable_day = misc.get_readable_date(mydate)
-    except: 
-        error_handling("error_03")
+    if mydate=='':
+        mydate=date
+        #return error_handling("error_03")
+    
+    #try: #versucht, das ausgesprochene datum readable zu konvertieren (zu mo/di/mi/do/fr als string)
+    
+    readable_day = misc.get_readable_date(mydate)
+
+    #except: 
+    #    return error_handling("error_03")
     
     #print "übergeben wurde", str(mydate)
     try: 
@@ -146,13 +152,13 @@ def weekday_request(mydate):
     try:
         food = mensa.read_json(mensa.check_json())
         dict(food)
-    except KeyError: #wenn die session kein food und date hat, hat man nich mit welcomegestartet und muss die info erst holen
+    except: #wenn die session kein food und date hat, hat man nich mit welcomegestartet und muss die info erst holen
         food = mensa.scrape_pipeline() #get's a food dict or loading error as string
         if type(food)==str:
             error_handling(food)
     
-    if mydate == '': # passiert, wenn wir ohne slot ungewollt in diesen Intent gelangen:
-        mydate = date #sicherheitshalbe heute/morgen datum nehmen
+    #if mydate == '': # passiert, wenn wir ohne slot ungewollt in diesen Intent gelangen:
+    #    mydate = date #sicherheitshalbe heute/morgen datum nehmen
     maindish = food[str(mydate)]["maindish"]
     veggiedish = food[str(mydate)]["veggiedish"]
 

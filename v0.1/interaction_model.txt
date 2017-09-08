@@ -46,22 +46,19 @@ MenuIntent Ich möchte etwas über andere Mahlzeiten wissen
 MenuIntent Ich möchte etwas über andere Menüs wissen
 MenuIntent Ich möchte etwas über ein anderes Menü wissen
 WeekdayIntent Was gibt es am {Weekday}
-WeekdayIntent Was gibt es {Weekday}
-WeekdayIntent nach {Weekday}
-WeekdayIntent für den {Weekday}
+WeekdayIntent und frage nach {Weekday}
+WeekdayIntent {Weekday}
 WeekdayIntent bitte den {Weekday}
 WeekdayIntent Was kann ich {Weekday} bekommen
 WeekdayIntent ich möchte gerne wissen was es {Weekday} gibt
-WeekdayIntent ja gerne würde ich etwas über {Weekday} wissen
 WeekdayIntent Ich möchte etwas über {Weekday} wissen
 WeekdayIntent Was es {Weekday} gibt
-WeekdayIntent Welche Menüs gibt es am {Weekday}
 WeekdayIntent Welche Menüs gibt es {Weekday}
-WeekdayIntent nach den Menüs am {Weekday}
 WeekdayIntent was es {Weekday} zu essen gibt
 WeekdayIntent Was gibt es {Weekday} zu essen
 WeekdayIntent Ich möchte wissen was es {Weekday} gibt
-WeekdayIntent Ich möchte wissen was es {Weekday} zu essen gibt
+WeekdayIntent und sag mir was es {Weekday} gibt
+WeekdayIntent und erzähle mir was es {Weekday} gibt 
 BeilagenIntent nach Beilagen
 BeilagenIntent was es an Beilagen gibt
 BeilagenIntent was es für Beilagen gibt
@@ -107,3 +104,4 @@ Donnerstag
 Freitag
 Morgen
 Übermorgen
+Gestern
