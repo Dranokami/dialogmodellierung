@@ -11,36 +11,28 @@ import os.path
 def check_json():
     ''' function checks if actual json is available
     returns true | false'''
-    # TODO: überprüfen, ob os.path() in Linux auf gleiche Weise funktioniert, wie in Win 
-    # der pfad muss an jeweiligen "Start-ort" angepasst werden (also von wo das Modul geladen und gestartet wird)
-    # ich weiß nicht, ob es (für unsere Zwecke) ausreichen würde einfach ein "./web_scraper/" oder so davor zu setzen
-    # glaube zudem, dass zwischen Windoof- und Unix-Systemen einen unterschied macht, ob man "/" oder "\"
-    # vielleicht gibt die doku ja was her?
     
-    today = datetime.date.today()
-    last_monday = today + datetime.timedelta(days=-today.weekday(), weeks=0)
-    if os.path.isfile(str(last_monday)[:10] + ".json"):
-        f = os.path.basename(str(last_monday)[:10] + ".json")
-        return f
+    today = datetime.date.today() #asks for the current date 
+    last_monday = today + datetime.timedelta(days=-today.weekday(), weeks=0) # asks for the date of the last monday
+    if os.path.isfile(str(last_monday)[:10] + ".json"): #when .json already exists, return json with food information
+        return os.path.basename(str(last_monday)[:10] + ".json")
     else:
         return False
         
 def read_json(file_name):
     ''' function reads json from folder
-    returns json'''
+    returns json content'''
     with open(file_name, 'r') as jfile:
-        j_file = json.load(jfile)
-    return j_file
+        json_content = json.load(jfile)
+    return json_content
 
-def download_page(URL="http://www.studierendenwerk-bielefeld.de/essen-trinken/essen-und-trinken-in-mensen/bielefeld/mensa-gebaeude-x.html"):
-    ''' function downloads the information of the current week
-    returns text | error message'''
+def download_page(URL="http://www.studierendenwerk-bielefeld.de/essen-trinken/essen-und-trinken-in-mensen/bielefeld/mensa-gebaeude-x.html"): #url can be replaced
+    ''' function downloads the information of the current week 
+    returns website content in xml structure'''
     r = requests.get(URL)
     if r.status_code == 200:
         r.encoding = "utf-8"
         return r.text
-    else:
-        return "Seite existiert nicht" #Wie soll scraper_pipeline darauf zugreifen?
 
 
 def parse_web_page(doc):
@@ -52,8 +44,8 @@ def parse_web_page(doc):
     # parsing via beautifulsoup
     soup = BeautifulSoup(doc, 'html.parser')
 
-    # sind in der ersten Woche 5 Menüs?
-    # sind in der ersten und zweiten woche 10 menüs?
+    # Hier hätten wir eine Strukturüberprüfungsabfrage einbauen sollen. 
+    # Zunächst für den ersten Teil (also sind 5 Schlüssel im food_dict)
     
     #nächste Woche aufrufen
     for link in soup.find_all('a'):
@@ -66,6 +58,8 @@ def parse_web_page(doc):
     soup = BeautifulSoup(combined_doc, 'html.parser')
     for tag in soup.findAll('sup'):
         tag.decompose()
+    
+    # dann testen, ob nach der zweiten Woche 10 Schlüssel im dict sind. Falls nicht, Fehlermeldung werfen.
 
     # find datetime to sort dishes per date
     compiler = re.compile(r"[0-3][0-9]\.[0-1][0-9]\.20[0-9][0-9]")
@@ -77,7 +71,7 @@ def parse_web_page(doc):
     for heading in soup.findAll('div', class_='mensa plan'):
         if not heading:
             print "error_01"
-             # testing ob struktur übereinstimmt --> none-type?
+             # Testung ob Struktur übereinstimmt --> none-type?
         else:
             temp_dict = dict()
             raw_path = heading.div.table.tbody.tr
@@ -89,17 +83,14 @@ def parse_web_page(doc):
 
             temp_dict['sidedish'] = u', '.join(sidedishes_set)
             dishes_day_by_day.append(temp_dict)
-    return dict(zip(datumsliste, dishes_day_by_day))
+    return dict(zip(datumsliste, dishes_day_by_day)) #gibt die Infos der website als Dictionary mit den Essen als Werte zurück.
 
 def convert_json(food_dict):
     '''function takes the food info and converts that to a json file
-    returns json file | error message '''
-    if type(food_dict) == dict:  # das kann dann später weg. nur noch diese json.dump(dictionary)
-        return json.dumps(food_dict)
-    else:
-        print "error_02"
-
-
+    returns json file'''
+    if type(food_dict) == dict:  # Miniabfrage ob Struktur stimmt
+        return json.dumps(food_dict) # erstellt json-Datei
+        
 def save2json(food_dict):
     ''' saves the json_file in folder'''
     today = datetime.date.today()
@@ -111,16 +102,14 @@ def save2json(food_dict):
 def scrape_pipeline():
     ''' mother function that merges all functions together
     returns dict for alexa '''
-    # Kommentar von Julia: ich schätze, dass es an dieser Stelle zu einem Fehler kann, \
-    #weil eine Text-Datei weitergereicht wurde (wenn überhaupt mal eine .json generiert wurde) \
-    # denn sobald hier die Datei eingelesen wird, enststeht ein STRING und der löst in der kohldampf.py an vielen Stellen einen ERROR aus
     
+    ## der erste Teil wirft relativ häufig fehler. Das Problem liegt beim Einlesen der json-Datei au dem Ordner. evtl. wird dann 'nur' ein String und nicht ein Dict übergeben.
     #checked_json = check_json()
     #if checked_json:
     #    print 'hello'
     #    return read_json(checked_json)
     #else:
-    if True:
+    if True: # von hier ab werden die oberen Funktionen aufgerufen; sprich, die Seite wird aufgerufen, geparsed, die Infos werden extrahiert und in ein Dictionary übergeben, das dann an die Alexaanbindung übergeben wird.
         page_content = download_page()
         if page_content:
             food_dict = parse_web_page(page_content)
