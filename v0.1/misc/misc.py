@@ -57,6 +57,21 @@ def get_readable_date(mydate):
 
     return readable_date
 
+def is_weekend(date):
+    #returns True if day is weekend, false if not 
+    splitted = date.split("-")
+    year = int(splitted[0])
+    month = int(splitted[1])
+    day = int(splitted[2])
 
+    if datetime.date(year, month, day).isoweekday() == 5 or datetime.date(year, month, day).isoweekday() == 6: #wenn nach morgen /übermorgen auf sams/sonn gemapped, wird, nehmen wir besser nächsten montag
+        weekend_bool=True
+    else:
+        weekend_bool=False
+
+    return weekend_bool
+
+
+    
 if __name__ == '__main__':
     probable_date()

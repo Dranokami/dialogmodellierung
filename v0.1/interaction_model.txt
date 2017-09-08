@@ -9,10 +9,7 @@ INTENTS:
       "intent": "MenuIntent"
     },
     {
-      "intent": "StopIntent"
-    },
-    {
-      "intent": "CancelIntent"
+      "intent": "FinalIntent"
     },
     {
       "intent": "BeilagenIntent"
@@ -53,8 +50,8 @@ WeekdayIntent nach {Weekday}
 WeekdayIntent für den {Weekday}
 WeekdayIntent bitte den {Weekday}
 WeekdayIntent Was kann ich {Weekday} bekommen
-WeekdayIntent ich möchte gerne wissen was es  {Weekday} gibt
-WeekdayIntent ja, gerne würde ich etwas über {Weekday} wissen
+WeekdayIntent ich möchte gerne wissen was es {Weekday} gibt
+WeekdayIntent ja gerne würde ich etwas über {Weekday} wissen
 WeekdayIntent Ich möchte etwas über {Weekday} wissen
 WeekdayIntent Was es {Weekday} gibt
 WeekdayIntent Welche Menüs gibt es am {Weekday}
@@ -90,6 +87,12 @@ VeggieIntent Was sagt das vegetarische heute
 VeggieIntent nach dem vegetarischen angebot
 VeggieIntent nach dem vegetarischen essen
 VeggieIntent nach dem vegetarischen Menü
+FinalIntent Nein danke
+FinalIntent Das wäre es
+FinalIntent Tschüß
+FinalIntent Abbrechen
+FinalIntent Hör auf
+
 
 Slottype: Weekday
 Values:

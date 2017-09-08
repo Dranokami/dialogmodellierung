@@ -113,7 +113,16 @@ def beilageninfo():
  
 def weekday_request(mydate):
     #todo: samstag /sonntag möglich machen als slot und abfangen
+
+    date = misc.probable_date() #get's probably intended date as string, based on weekday and time (if mensa is open, today, if closed tommorows or mondays date!)
     readable_day = misc.get_readable_date(mydate)
+    
+    #print "übergeben wurde", str(mydate)
+    weekend_bool = misc.is_weekend(str(mydate)) #returns true if the requestet date is a weekend
+    if weekend_bool == True:
+        #print "und das ist ein wochenende"
+        mydate = date
+    
     try:
         food = session.attributes['food']
         date = session.attributes['date']
@@ -121,8 +130,7 @@ def weekday_request(mydate):
         food = mensa.scrape_pipeline() #get's a food dict or loading error as string
         if type(food)==str:
             error_handling(food)
-
-    date = misc.probable_date() #get's probably intended date as string, based on weekday and time (if mensa is open, today, if closed tommorows or mondays date!)
+    
     if mydate == '': # passiert, wenn wir ohne slot ungewollt in diesen Intent gelangen:
         mydate = date #sicherheitshalbe heute/morgen datum nehmen
     maindish = food[str(mydate)]["maindish"]
@@ -131,16 +139,17 @@ def weekday_request(mydate):
     weekday_reply=render_template('specdate', wochentag=readable_day, maindish=maindish, veggiedish=veggiedish)
     #first, check if a dialouge_sate exists:
     try:
-        grounded = session.attributes['dialogue_state']
-        #if it exists, we save the date that was talked about here
-        grounded['talked_date'] = str(mydate)
-        #and give it back as session attribute
-        session.attributes['dialogue_state']
+        grounded = session.attributes['dialogue_state'] #if it exists, we save the date that was talked about here
+        grounded['talked_date'] = str(mydate)           #and give it back as session attribute
+        session.attributes['dialogue_state'] = grounded
     except: #wenn es keinen gibt, erstellen wir es
-        grounded{'talked_date'} = str(mydate) #saves what was talked about before 
-
-
+        grounded = {}
+        grounded['talked_date'] = str(mydate) #saves what was talked about before 
+        session.attributes["dialogue_state"] = grounded
     return question(weekday_reply)
+
+
+
 
 @ask.intent("VeggieIntent")
 
@@ -167,20 +176,12 @@ def myveggie():
    
 
 
-
-@ask.intent("StopIntent")
-
-def end_msg():
-    goodbye = render_template('quitmsg')
-    return statement(goodbye)
-
-
-
-@ask.intent("CancelIntent")
+@ask.intent("FinalIntent")  #the premade stopintents somehow triggered beilagen
 
 def end_msg():
     goodbye = render_template('quitmsg')
     return statement(goodbye)
+
 
 
 
