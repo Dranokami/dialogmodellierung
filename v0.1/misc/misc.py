@@ -4,7 +4,7 @@
 import datetime
 
 def probable_date():
-    #uses datetime to find out if its weekend or after 14.30 (the mensa closing time) and returns the next date an dem die mensa aufhat 
+    #uses datetime to find out if its weekend or after 14.30 (the mensa closing time) and returns the next date an dem die mensa auf hat 
     weekday = datetime.datetime.today().weekday()
     todays_date=str(datetime.datetime.now()).split()[0]
     time=str(datetime.datetime.now()).split()[1]
@@ -22,6 +22,7 @@ def probable_date():
         else:
             mensa="today_relevant"
 
+    ## überprüfen, ob es wochenende ist.
     if weekday == 6: #wenn es So ist:
         date = str(datetime.datetime.now() + datetime.timedelta(days=1)).split()[0] #morgen
     elif weekday == 5: # wenn es Sa ist.
@@ -58,20 +59,21 @@ def get_readable_date(mydate): #readable to mo/di/mi/do/fr abstürz bei heute + 
         readable_date=only_day+"sten"
     return readable_date
 
-def is_weekend(date):
+def is_weekend(given_date):
     #returns True if day is weekend, false if not 
-    try: 
-        splitted = date.split("-")
-        year = int(splitted[0])
-        month = int(splitted[1])
-        day = int(splitted[2])
+    #try: 
+    splitted = given_date.split("-")
+    year = int(splitted[0])
+    month = int(splitted[1])
+    day = int(splitted[2])
 
-        if datetime.date(year, month, day).isoweekday() == 5 or datetime.date(year, month, day).isoweekday() == 6: #wenn nach morgen /übermorgen auf sams/sonn gemapped, wird, nehmen wir besser nächsten montag
-            weekend_bool=True
-        else:
-            weekend_bool=False
-
+    if datetime.date(year, month, day).isoweekday() == 5 or datetime.date(year, month, day).isoweekday() == 6: #wenn nach morgen /übermorgen auf sams/sonn gemapped, wird, nehmen wir besser nächsten montag
+        weekend_bool=True
+    else:
+        weekend_bool=False
+            
     return weekend_bool
+
 
 
     
