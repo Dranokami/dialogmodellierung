@@ -12,9 +12,9 @@ def check_json():
     ''' function checks if actual json is available
     returns true | false'''
     
-    today = datetime.date.today() #asks for the current date 
-    last_monday = today + datetime.timedelta(days=-today.weekday(), weeks=0) # asks for the date of the last monday
-    if os.path.isfile(str(last_monday)[:10] + ".json"): #when .json already exists, return json with food information
+    today = datetime.date.today() #asking for the current date 
+    last_monday = today + datetime.timedelta(days=-today.weekday(), weeks=0) # asking for the date of the last monday
+    if os.path.isfile(str(last_monday)[:10] + ".json"): #when .json already exists, returning json with food information
         return os.path.basename(str(last_monday)[:10] + ".json")
     else:
         return False
@@ -44,10 +44,10 @@ def parse_web_page(doc):
     # parsing via beautifulsoup
     soup = BeautifulSoup(doc, 'html.parser')
 
-    # Hier hätten wir eine Strukturüberprüfungsabfrage einbauen sollen. 
-    # Zunächst für den ersten Teil (also sind 5 Schlüssel im food_dict)
+    # here we should have implemented a structure checking. 
+    # first part should contain five keys in the food_dict
     
-    #nächste Woche aufrufen
+    # parsing next weeks mensa info
     for link in soup.find_all('a'):
         if link.get('title') == u"» nächste Woche":
             next_week_link = "http://www.studierendenwerk-bielefeld.de"+link['href']
@@ -58,20 +58,19 @@ def parse_web_page(doc):
     soup = BeautifulSoup(combined_doc, 'html.parser')
     for tag in soup.findAll('sup'):
         tag.decompose()
+        
+    # checking if dictionary contains ten keys. If not, error message
     
-    # dann testen, ob nach der zweiten Woche 10 Schlüssel im dict sind. Falls nicht, Fehlermeldung werfen.
-
-    # find datetime to sort dishes per date
+    # finding datetime to sort dishes per date
     compiler = re.compile(r"[0-3][0-9]\.[0-1][0-9]\.20[0-9][0-9]")
     datumsliste = [datetime.datetime.strptime(compiler.search(f.text).group(),"%d.%m.%Y").strftime("%Y-%m-%d") for f in soup.findAll('h2') if compiler.search(f.text)]
 
     # .strftime("%Y-%m-%d") if we want to change the date structure we have to append on (...)-.
-    # exctract dishes
-
+    
+    # exctracting dishes
     for heading in soup.findAll('div', class_='mensa plan'):
         if not heading:
-            print "error_01"
-             # Testung ob Struktur übereinstimmt --> none-type?
+            print "error_01"# testing --> none-type?
         else:
             temp_dict = dict()
             raw_path = heading.div.table.tbody.tr
@@ -83,13 +82,13 @@ def parse_web_page(doc):
 
             temp_dict['sidedish'] = u', '.join(sidedishes_set)
             dishes_day_by_day.append(temp_dict)
-    return dict(zip(datumsliste, dishes_day_by_day)) #gibt die Infos der website als Dictionary mit den Essen als Werte zurück.
+    return dict(zip(datumsliste, dishes_day_by_day)) #provides the mensa plan with date as key and dishes per date as values; these dishes are keys in an inner dictionary that has the extracted dishes as values
 
 def convert_json(food_dict):
     '''function takes the food info and converts that to a json file
     returns json file'''
-    if type(food_dict) == dict:  # Miniabfrage ob Struktur stimmt
-        return json.dumps(food_dict) # erstellt json-Datei
+    if type(food_dict) == dict:  
+        return json.dumps(food_dict) # creating a json that contains the food dict
         
 def save2json(food_dict):
     ''' saves the json_file in folder'''
@@ -100,23 +99,23 @@ def save2json(food_dict):
 
 
 def scrape_pipeline():
-    ''' mother function that merges all functions together
+    ''' function that merges all functions together
     returns dict for alexa '''
     
-    ## der erste Teil wirft relativ häufig fehler. Das Problem liegt beim Einlesen der json-Datei au dem Ordner. evtl. wird dann 'nur' ein String und nicht ein Dict übergeben.
+    ## meta information: the first part gives occationally an error. Therefore, we commented that out.
     #checked_json = check_json()
     #if checked_json:
     #    print 'hello'
     #    return read_json(checked_json)
     #else:
-    if True: # von hier ab werden die oberen Funktionen aufgerufen; sprich, die Seite wird aufgerufen, geparsed, die Infos werden extrahiert und in ein Dictionary übergeben, das dann an die Alexaanbindung übergeben wird.
+    if True: # the second part calls the functions from above: the page is called up, parsed and the infomation is extraced and transmitted to a dictionary. 
         page_content = download_page()
         if page_content:
             food_dict = parse_web_page(page_content)
             json_file = convert_json(food_dict)
             if json_file:
                 save2json(json_file)
-                return food_dict
+                return food_dict # dictionary is transmitted to the alexa connection.
             else:
                 print "error_01"
         else:

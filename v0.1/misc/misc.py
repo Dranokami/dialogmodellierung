@@ -4,13 +4,14 @@
 import datetime
 
 def probable_date():
-    #uses datetime to find out if its weekend or after 14.30 (the mensa closing time) and returns the next date an dem die mensa auf hat 
+    '''uses datetime to find out if it's weekend or after 14.30 (the mensa closing time)
+    returns the next date the mensa opens''' 
     weekday = datetime.datetime.today().weekday()
     todays_date=str(datetime.datetime.now()).split()[0]
     time=str(datetime.datetime.now()).split()[1]
-    #now weekday is 1,2,3,4,5,6,7, date is "2017-09-05" and time is "19:46:07.851512" (format wise, not actually those numbers)
+    #weekday: 1,2,3,4,5,6,7; date: "2017-09-05"; time: "19:46:07.851512" (formatwise, not actually those numbers)
     
-
+    # checking the daytime
     hour=int(time.split(":")[0])
     if hour <= 13:
         mensa="today_relevant"
@@ -22,32 +23,34 @@ def probable_date():
         else:
             mensa="today_relevant"
 
-    ## überprüfen, ob es wochenende ist.
-    if weekday == 6: #wenn es So ist:
-        date = str(datetime.datetime.now() + datetime.timedelta(days=1)).split()[0] #morgen
-    elif weekday == 5: # wenn es Sa ist.
-        date = str(datetime.datetime.now() + datetime.timedelta(days=2)).split()[0] #übermorgen
-    elif weekday == 4: # wenn es Fr ist, muss überprüft werden ob die mensa noch auf hat
+    # checking the weekday (weekend or not)
+    if weekday == 6: #if true/sunday:
+        date = str(datetime.datetime.now() + datetime.timedelta(days=1)).split()[0] #today
+    elif weekday == 5: #if saturday.
+        date = str(datetime.datetime.now() + datetime.timedelta(days=2)).split()[0] #tomorrow
+    elif weekday == 4: # if friday, checking if mensa is already closed
         if mensa == "today_relevant":
             date = todays_date
         else:
-            date = str(datetime.datetime.now() + datetime.timedelta(days=3)).split()[0] #montag
-    else: #mo-di-mi-do
+            date = str(datetime.datetime.now() + datetime.timedelta(days=3)).split()[0] #monday
+    else: #mon-tue-wed-thu
         if mensa == "today_relevant":
             date = todays_date
         else:
-            date = str(datetime.datetime.now() + datetime.timedelta(days=1)).split()[0] #morgen
+            date = str(datetime.datetime.now() + datetime.timedelta(days=1)).split()[0] #tomorrow
 
-    #print date, type(date)
     return date
 
-def get_readable_date(mydate): #readable to mo/di/mi/do/fr abstürz bei heute + vegetarisch 
+def get_readable_date(mydate):
+    '''function takes actual date and checks weekday
+    returns name of weekdays''' 
     only_day=mydate[-2:]    
     splitted = mydate.split("-")
     year = int(splitted[0])
     month = int(splitted[1])
     day = int(splitted[2])
 
+    # converting actual date into weekday name to transfer to the audio input
     if datetime.date(year, month, day).isoweekday() == 1:
         week_day = 'Montag' 
     elif datetime.date(year, month, day).isoweekday() == 2:
@@ -69,8 +72,8 @@ def get_readable_date(mydate): #readable to mo/di/mi/do/fr abstürz bei heute + 
 
 
 def is_weekend(given_date):
-    #returns True if day is weekend, false if not 
-    #try: 
+    '''function takes given date and checks if mensa is open or not
+    return boolean'''
     splitted = given_date.split("-")
     year = int(splitted[0])
     month = int(splitted[1])
@@ -82,8 +85,6 @@ def is_weekend(given_date):
         weekend_bool=False
             
     return weekend_bool
-
-
 
     
 if __name__ == '__main__':
