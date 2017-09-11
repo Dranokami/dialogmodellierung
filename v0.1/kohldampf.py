@@ -3,7 +3,7 @@
 
 import logging
 import datetime
-#import web_scraper.fake_scrape as mensa
+#import web_scraper.fake_scrape as mensa this module is used when the scraper doesn't work and includes a fake mensa plan and random pesudo errors
 import mensa_web_scraping as mensa
 import misc.misc as misc 
 
@@ -25,7 +25,7 @@ def error_handling(error):
     error_msg = render_template(error)
     if error != "error_03":
         return statement(error_msg)
-    else: #auf error drei kann man antworten bzw soll
+    else: #auf error drei kann man antworten bzw soll, daher wird es als question statt statement returned
         return question(error_msg)
 
 #This py get's handles all intents, external information about food gets imported from the scraper, intented days (based on opening times) from misc function
@@ -34,12 +34,12 @@ def error_handling(error):
 
 def new_game():
 
-    food = mensa.scrape_pipeline() #get's a food dict or loading error
+    food = mensa.scrape_pipeline() #get's a food dict or a loading error
     if type(food) == str:
         error_handling(food)
-    date = misc.probable_date() #get's probably intended date as string, based on weekday and time (if mensa is open, today, if closed tommorows or mondays date!)
-    todays_date=str(datetime.datetime.now()).split()[0]
-    
+    date = misc.probable_date() #get's probably intended date as string, based on weekday and time (if mensa is open, today, if closed tommorows or mondays date)
+    todays_date=str(datetime.datetime.now()).split()[0]#we could use today() func instead
+    #next we map the dates we just found out to the mainmeals in the food dictionary from the webscraper:
     maindish = food[date]["maindish"]
     veggiedish = food[date]["veggiedish"]
         
@@ -48,9 +48,7 @@ def new_game():
     else: #wenn der tag abweichend ist, wird alternativ informiert, das die mensa zu hat
         welcome_msg = render_template('alt_welcome', maindish=maindish, veggiedish=veggiedish)
 
-    #session.attributes['food'] = food #übergibt das food attribut und relevante datum der session 
-
-    #session.attributes['date'] = date
+    #session.attributes['food'] = food #übergibt das food attribut und relevante datum der session, wird nicht verwendet
 
     return question(welcome_msg)
 
@@ -58,7 +56,7 @@ def new_game():
 
 @ask.intent("MenuIntent")
 
-def menuoptions():
+def menuoptions(): #dieser intent informiert über die Menü Möglichkeiten, wenn ein Nutzer generische Anfragen wie "Mahlzeiten" angibt
     option_msg = render_template('menu_options')
     return question(option_msg)
 
@@ -66,7 +64,7 @@ def menuoptions():
 
 @ask.intent("DayIntent")
 
-def dayoptions():
+def dayoptions(): #dieser intent informiert den Benutzer über die Wochentags Funktion, falls eine generische Anfragen wie "Wochentag" angegeben wurde
     option_msg = render_template('day_options')
     return question(option_msg)
 
@@ -75,19 +73,19 @@ def dayoptions():
 @ask.intent("VitalIntent")
 
 def vitalinfo():
-    try: 
+    try: #dieser try/except block überprüft ob ein Json bereits in der welc.msg oder vorherigen aufrufen erstellt wurde
         food = mensa.read_json(mensa.check_json())
         dict(food)
-    except:
+    except: #wenn das nicht der fall ist, wird die webscrape pipeline gestartet um die informationen abzufragen
         food = mensa.scrape_pipeline()
         if type(food) == str:
             error_handling(food)
 
-    todays_date=str(datetime.datetime.now()).split()[0]
+    todays_date=str(datetime.datetime.now()).split()[0] #wie in der welc.msg. und jedem intent, werden Datumsangaben benötigt
     date = misc.probable_date()
 
     vitales_essen = food[date]["vital"]
-    #print food[date]["vital"]
+
     if todays_date == date: 
         option_msg = render_template('vital_msg', vital =vitales_essen)
     else: 
@@ -99,12 +97,12 @@ def vitalinfo():
 
 @ask.intent("BeilagenIntent")
 
-def beilageninfo():
+def beilageninfo(): #funktioniert genau wie Vital nur mit alternativem lookup im dict nud entsprechender message
     try: 
         food = mensa.read_json(mensa.check_json())
         dict(food)
-    except: #wenn die session kein food und date hat, hat man nich mit welcomegestartet und muss die info erst holen
-        food = mensa.scrape_pipeline() #get's a food dict or loading error as string
+    except: #wenn die session kein food hat, hat man nich mit welcomegestartet und muss die info erst holen (zb.: frage teufelsküche nach Beilagen)
+        food = mensa.scrape_pipeline()
         if type(food)==str:
             error_handling(food)
     
@@ -115,7 +113,7 @@ def beilageninfo():
     
     if date == todays_date: #Wenn der heutige Tag noch relevant ist, kommt die heutige vital msg
         option_msg = render_template('beilagen', beilagen=beilagen)
-    else: #wenn der tag abweichend ist, wird alternativ informiert, das die mensa zu hat
+    else: #wenn der tag abweichend ist, wird alternativ informiert, dass die mensa zu hat
         option_msg = render_template('alt_beilagen', beilagen=beilagen)
 
     return question(option_msg)
@@ -124,39 +122,37 @@ def beilageninfo():
 
 @ask.intent("WeekdayIntent", mapping={'mydate': 'Weekday'})
  
+
 def weekday_request(mydate):
-    #todo: samstag /sonntag möglich machen als slot und abfangen
+    #Dieser Intent wird immer aufgerufen, wenn ein bestimmter Wochentag angegeben / angefragt wurde (wird aber leider manchmal mit leerem slot erkannt)
+    date = misc.probable_date() #wie immer datumsangaben, dieses malals zurückfall-Wert, falls dieser intent ohne erkanntes datum aufgerufen wird
     
-    date = misc.probable_date() #get's probably intended date as string, based on weekday and time (if mensa is open, today, if closed tommorows or mondays date!)
-    
-    if mydate=='':
+    if mydate=='': #diese if passiert, wenn wir ohne slot ungewollt in diesen Intent gelangen
         mydate=date
-        #return error_handling("error_03")
     
-    #try: #versucht, das ausgesprochene datum readable zu konvertieren (zu mo/di/mi/do/fr als string)
-    
+    #readable date konvertiert das nun feststehnde datum zu einem "readable" string (zu montag/di/mi/do/fr als string)
     readable_day = misc.get_readable_date(mydate)
 
-    weekend_bool = misc.is_weekend(str(mydate)) #returns true if the requestet date is a weekend
+    weekend_bool = misc.is_weekend(str(mydate)) #returns true if the requested date is a weekend
     if weekend_bool == True:
-        print "und das ist ein wochenende"
-        mydate = date
+        #print "und das ist ein wochenende"
+        mydate = date #indem Fall fallen wir aus das probable default Datum zurück, damit in jedem Fall eine informative Auskunft gegeben wird
     
-    try:
+    try: #ab hier funktioniert der intent genau wie welc msg, beilagen und vital intent
         food = mensa.read_json(mensa.check_json())
         dict(food)
     except: #wenn die session kein food und date hat, hat man nich mit welcomegestartet und muss die info erst holen
         food = mensa.scrape_pipeline() #get's a food dict or loading error as string
         if type(food)==str:
             error_handling(food)
-    
-    #if mydate == '': # passiert, wenn wir ohne slot ungewollt in diesen Intent gelangen:
-    #    mydate = date #sicherheitshalbe heute/morgen datum nehmen
+
     maindish = food[str(mydate)]["maindish"]
     veggiedish = food[str(mydate)]["veggiedish"]
 
     weekday_reply=render_template('specdate', wochentag=readable_day, maindish=maindish, veggiedish=veggiedish)
-    #first, check if a dialouge_sate exists:
+    
+    #this was an attempt at grounding, maybe we just spoke about vitalmenü, so i check if such a dialouge_sate exists
+    #also we should save the date the user is currently requesting for future queries 
     try:
         grounded = session.attributes['dialogue_state'] #if it exists, we save the date that was talked about here
         grounded['talked_date'] = str(mydate)           #and give it back as session attribute
@@ -165,6 +161,8 @@ def weekday_request(mydate):
         grounded = {}
         grounded['talked_date'] = str(mydate) #saves what was talked about before 
         session.attributes["dialogue_state"] = grounded
+    #unfortunately, this isn't included in the other intents yet 
+    
     return question(weekday_reply)
 
 
@@ -172,7 +170,7 @@ def weekday_request(mydate):
 
 @ask.intent("VeggieIntent")
 
-def myveggie():
+def myveggie(): #works just like vital and beilange, just with the veggiemenü and voicelines
     try: 
         food = mensa.read_json(mensa.check_json())
         dict(food)
@@ -195,7 +193,7 @@ def myveggie():
    
 
 
-@ask.intent("FinalIntent")  #the premade stopintents somehow triggered beilagen
+@ask.intent("FinalIntent")  #our default good bye msg =) 
 
 def end_msg():
     goodbye = render_template('quitmsg')
