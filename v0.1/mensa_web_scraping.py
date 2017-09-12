@@ -109,17 +109,17 @@ def scrape_pipeline():
     #    return read_json(checked_json)
     #else:
     if True: # the second part calls the functions from above: the page is called up, parsed and the infomation is extraced and transmitted to a dictionary. 
-        page_content = download_page()
-        if page_content:
-            food_dict = parse_web_page(page_content)
-            json_file = convert_json(food_dict)
-            if json_file:
-                save2json(json_file)
-                return food_dict # dictionary is transmitted to the alexa connection.
-            else:
-                print "error_01"
+    page_content = download_page()
+    if page_content:
+        food_dict = parse_web_page(page_content)
+        json_file = convert_json(food_dict)
+        if json_file:
+            save2json(json_file)
+            return food_dict # dictionary is transmitted to the alexa connection.
         else:
-            print "error_02"
+            print "error_01"
+    else:
+        print "error_02"
 
 if __name__ == '__main__':
 	scrape_pipeline()
